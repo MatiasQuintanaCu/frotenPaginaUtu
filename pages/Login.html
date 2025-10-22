@@ -2,344 +2,64 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión</title>
+    <title>Login UTU</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            height: 100vh;
         }
-
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .login-container:hover {
-            transform: translateY(-5px);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h1 {
-            color: #333;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            color: #555;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: color 0.3s ease;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
+        .card {
+            background: white;
+            padding: 30px;
             border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #fff;
+            box-shadow: 0 0 10px #ccc;
+            width: 300px;
         }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .form-group input:focus + label,
-        .form-group input:not(:placeholder-shown) + label {
-            color: #667eea;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #666;
-            font-size: 16px;
-            padding: 4px;
-        }
-
-        .password-toggle:hover {
-            color: #667eea;
-        }
-
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .remember-me input[type="checkbox"] {
-            width: auto;
-            margin: 0;
-        }
-
-        .forgot-password {
-            color: #667eea;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password:hover {
-            color: #764ba2;
-        }
-
-        .login-button {
+        input, button {
+            display: block;
             width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-top: 10px;
+            padding: 10px;
+        }
+        button {
+            background-color: #004aad;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .login-button:active {
-            transform: translateY(0);
-        }
-
-        .divider {
-            text-align: center;
-            margin: 25px 0;
-            position: relative;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #e1e5e9;
-        }
-
-        .divider span {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0 15px;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .signup-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .signup-link a:hover {
-            color: #764ba2;
-        }
-
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 20px;
-                margin: 10px;
-            }
-
-            .login-header h1 {
-                font-size: 24px;
-            }
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .form-group.error input {
-            border-color: #e74c3c;
-        }
-
-        .form-group.error .error-message {
-            display: block;
+        button:hover {
+            background-color: #003680;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>Bienvenido</h1>
-            <p>Inicia sesión en tu cuenta</p>
-        </div>
-        
-        <form id="loginForm" novalidate>
-            <div class="form-group">
-                <label for="username">Nombre de Usuario</label>
-                <input type="text" id="username" name="username" required>
-                <div class="error-message">Por favor, ingresa tu nombre de usuario</div>
-            </div>
-            
-        
-            
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <div style="position: relative;">
-                    <input type="password" id="password" name="password" required>
-                    <button type="button" class="password-toggle" onclick="togglePassword()">
-                        👁️
-                    </button>
-                </div>
-                <div class="error-message">La contraseña debe tener al menos 6 caracteres</div>
-            </div>
-            
-        
-            
-            <button type="submit" class="login-button">
-                Iniciar Sesión
-            </button>
-        </form>
-        
-        <div class="divider">
-            <span>o</span>
-        </div>
-        
-        <div class="signup-link">
-            ¿No tienes cuenta? <a href="Registro.html">Regístrate aquí</a>
-        </div>
-    </div>
+<div class="card">
+    <h2>Iniciar sesión</h2>
+    <input type="email" id="correo" placeholder="Correo">
+    <input type="password" id="contraseña" placeholder="Contraseña">
+    <button onclick="login()">Ingresar</button>
+    <p id="msg"></p>
+</div>
 
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleButton = document.querySelector('.password-toggle');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.textContent = '🙈';
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.textContent = '👁️';
-            }
-        }
+<script>
+async function login() {
+    const correo = document.getElementById("correo").value;
+    const contraseña = document.getElementById("contraseña").value;
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Limpiar errores previos
-            document.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('error');
-            });
-            
-            let hasErrors = false;
-            
-            // Validar nombre de usuario
-            const username = document.getElementById('username');
-            if (!username.value.trim()) {
-                username.parentElement.classList.add('error');
-                hasErrors = true;
-            }
-            
-            // Validar email
-            const email = document.getElementById('email');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email.value.trim() || !emailPattern.test(email.value)) {
-                email.parentElement.classList.add('error');
-                hasErrors = true;
-            }
-            
-            // Validar contraseña
-            const password = document.getElementById('password');
-            if (!password.value || password.value.length < 6) {
-                password.parentElement.classList.add('error');
-                hasErrors = true;
-            }
-            
-            if (!hasErrors) {
-                // Simular envío del formulario
-                const button = document.querySelector('.login-button');
-                button.textContent = 'Iniciando sesión...';
-                button.disabled = true;
-                
-                setTimeout(() => {
-                    alert('¡Login exitoso! (Esta es una simulación)');
-                    button.textContent = 'Iniciar Sesión';
-                    button.disabled = false;
-                }, 2000);
-            }
-        });
+    const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ correo, contraseña })
+    });
 
-        // Remover error cuando el usuario empiece a escribir
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', function() {
-                if (this.parentElement.classList.contains('form-group')) {
-                    this.parentElement.classList.remove('error');
-                } else {
-                    this.parentElement.parentElement.classList.remove('error');
-                }
-            });
-        });
-    </script>
+    const text = await response.text();
+    document.getElementById("msg").textContent = text === "OK" ? "✅ Login exitoso" : "❌ Usuario o contraseña incorrectos";
+}
+</script>
 </body>
 </html>

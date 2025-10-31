@@ -269,7 +269,7 @@
     </div>
     
     <div class="nav-right">
-      <button class="login-btn" onclick="location.href='./Login.html'"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder</button>
+      <button class="login-btn" onclick="location.href='./pages/Login.php'"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder</button>
     </div>
   </nav>
 

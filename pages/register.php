@@ -1,58 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <meta charset="UTF-8">
- <title>Registro de usuario</title>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
 </head>
 <body>
- <h2>Formulario de registro</h2>
- <form id="registerForm">
-   <label>Nombre:</label>
-   <input type="text" id="nombre" required><br><br>
+  <h1>Registro</h1>
+  <form id="registerForm">
+    <label>Nombre:</label>
+    <input type="text" id="nombre" required><br><br>
 
+    <label>Correo:</label>
+    <input type="email" id="correo" required><br><br>
 
-   <label>Correo:</label>
-   <input type="email" id="correo" required><br><br>
+    <label>Contraseña:</label>
+    <input type="password" id="contrasena" required><br><br>
 
+    <button type="submit">Registrarse</button>
+  </form>
 
-   <label>Contraseña:</label>
-   <input type="password" id="contrasena" required><br><br>
+  <p id="resultado"></p>
 
+  <script>
+    const form = document.getElementById("registerForm");
+    const resultado = document.getElementById("resultado");
 
-   <button type="submit">Registrar</button>
- </form>
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
+      const data = {
+        nombre: document.getElementById("nombre").value,
+        correo: document.getElementById("correo").value,
+        contrasena: document.getElementById("contrasena").value
+      };
 
- <pre id="resultado"></pre>
+      try {
+        const res = await fetch("/api/user/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
+        // Intentar leer la respuesta como JSON
+        const json = await res.json();
 
- <script>
-   document.getElementById('registerForm').addEventListener('submit', async (e) => {
-     e.preventDefault();
-
-
-     const nombre = document.getElementById('nombre').value;
-     const correo = document.getElementById('correo').value;
-     const contrasena = document.getElementById('contrasena').value;
-
-
-     try {
-       const res = await fetch('/v1/user/create', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ nombre, correo, contrasena })
-       });
-
-
-       const data = await res.json();
-       document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
-     } catch (err) {
-       document.getElementById('resultado').textContent = 'Error: ' + err;
-     }
-   });
- </script>
+        resultado.textContent = JSON.stringify(json, null, 2);
+      } catch (err) {
+        console.error("Error:", err);
+        resultado.textContent = "❌ Error al conectar con el servidor.";
+      }
+    });
+  </script>
 </body>
 </html>
-
-

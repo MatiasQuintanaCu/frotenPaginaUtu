@@ -1,12 +1,36 @@
-# Archivo: public/.htaccess
-<IfModule mod_rewrite.c>
-    # Activa el módulo de reescritura
-    RewriteEngine On
+# ##############################################################################
+# ## ARCHIVO .HTACCESS CON DOS ROUTERS (FRONTEND Y API)
+# ##############################################################################
 
-    # Si la ruta solicitada es un archivo o directorio existente, no hacer nada (ej: /assets/style.css)
+# Activar el motor de reescritura de URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Define el archivo por defecto para el directorio raíz. Apunta al router del frontend.
+    DirectoryIndex index.php
+
+    # --------------------------------------------------------------------------
+    # REGLA 1: ENRUTAMIENTO DE LA API
+    # Todas las peticiones que comiencen con "api/" se envían al router de la API.
+    # --------------------------------------------------------------------------
+    RewriteRule ^api/(.*)$ api/index.php?request=v1/$1 [QSA,L]
+
+    # --------------------------------------------------------------------------
+    # REGLA 2: ENRUTAMIENTO DEL FRONTEND
+    # Si la petición NO es un archivo existente Y NO es un directorio existente,
+    # se envía al router principal del frontend (index.php).
+    # --------------------------------------------------------------------------
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php [L]
 
-    # Redirige todo lo demás a index.php. La bandera [L] significa "última regla"
-    RewriteRule ^(.*)$ index.php [L]
 </IfModule>
+
+# --- El resto de las configuraciones de seguridad y caché pueden seguir igual ---
+Options -Indexes
+<Files .htaccess>
+    Require all denied
+</Files>
+
+#

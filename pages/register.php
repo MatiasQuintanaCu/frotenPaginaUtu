@@ -331,7 +331,7 @@
         <div id="resultado"></div>
         
         <div class="login-link">
-            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+            ¿Ya tienes cuenta? <a href="login">Inicia sesión aquí</a>
         </div>
     </div>
 
@@ -554,7 +554,7 @@
         });
 
         function goToLoginFromModal() {
-            window.location.href = 'login.html';
+            window.location.href = 'login';
         }
 
         // Remover errores al escribir

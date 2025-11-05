@@ -11,7 +11,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
   <title>UTU - Universidad Técnica del Uruguay</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: 'Arial', sans-serif; 
       background: #f8f9fa; 
@@ -144,6 +144,10 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
     }
     .news-scroll::-webkit-scrollbar { width: 6px; }
     .news-scroll::-webkit-scrollbar-thumb { background: #003d82; border-radius: 3px; }
+    #LogoUtu { width: 10vh; border-radius: 200px; }
+    .user-menu { display: flex; align-items: center; gap: 15px; }
+    .loading-text { text-align: center; color: #666; margin: 20px 0; }
+    .error-text { text-align: center; color: #dc3545; margin: 20px 0; }
 
   
     /* FOOTER STYLES */
@@ -339,10 +343,11 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 }
 
   </style>
+  </style>
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- NAV (se mantiene igual) -->
   <nav>
     <div class="nav-left">
       <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
@@ -366,13 +371,11 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
     <div class="nav-right">
       <div class="user-menu" id="userMenu">
         <?php if ($isLoggedIn && !empty($userName)): ?>
-          <!-- Usuario Logueado - Muestra bienvenida y botón de cerrar sesión -->
           <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($userName); ?>!</div>
           <button class="logout-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Cerrar Sesión
           </button>
         <?php else: ?>
-          <!-- Usuario No Logueado - Muestra botón de acceder -->
           <button class="login-btn" onclick="goToLogin()">
             <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder
           </button>
@@ -382,9 +385,10 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
   </nav>
 
   <div class="main-container">
-    <!-- Carrusel -->
+    <!-- Carrusel para Posts -->
     <div class="carousel" id="carousel">
-      <h2><i class="fas fa-info-circle"></i> Información Institucional</h2>
+      <h2><i class="fas fa-info-circle"></i> Información UTU</h2>
+      <div class="loading-text">Cargando información...</div>
       <div class="carousel-controls">
         <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Anterior</button>
         <button onclick="nextSlide()">Siguiente <i class="fas fa-chevron-right"></i></button>
@@ -392,42 +396,21 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       <div class="carousel-indicators" id="indicators"></div>
     </div>
 
-    <!-- Noticias -->
-    <div class="news-scroll" id="news-container">
-      <h2><i class="fas fa-newspaper"></i> Noticias UTU</h2>
-      <div class="loading-text">Cargando noticias...</div>
+    <!-- Eventos/Noticias -->
+    <div class="news-scroll" id="eventos-container">
+      <h2><i class="fas fa-calendar-alt"></i> Eventos y Noticias</h2>
+      <div class="loading-text">Cargando eventos...</div>
     </div>
   </div>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-container">
-    <!-- Información institucional -->
-    <div class="footer-section">
-      <div class="footer-logo">
-        <h3>UTU</h3>
-        <p class="footer-subtitle">Universidad Técnica del Uruguay</p>
-      </div>
-      <p class="footer-description">
-        Formando profesionales técnicos con excelencia académica desde 1942.
-        Educación de calidad para el desarrollo del país.
-      </p>
-      <div class="footer-social">
-        <a href="#" aria-label="Facebook" class="social-link">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="#" aria-label="Twitter" class="social-link">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" aria-label="Instagram" class="social-link">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="#" aria-label="LinkedIn" class="social-link">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-        <a href="#" aria-label="YouTube" class="social-link">
-          <i class="fab fa-youtube"></i>
-        </a>
+  <!-- FOOTER (se mantiene igual) -->
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 UTU - Universidad Técnica del Uruguay. Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Términos de Servicio</a>
+        <a href="login">Acceso</a>
       </div>
     </div>
 
@@ -501,7 +484,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 </footer>
 
   <script>
-    // Dropdown
+    // Dropdown (se mantiene igual)
     function toggleDropdown() {
       document.getElementById('contactDropdown').classList.toggle('active');
     }
@@ -511,7 +494,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       }
     });
 
-    // Carousel
+    // Carousel (se mantiene igual)
     let currentSlide = 0, carouselSlides = [];
     function showSlide(i) {
       carouselSlides.forEach((s, idx) => s.classList.toggle('active', idx === i));
@@ -543,18 +526,40 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         cont.appendChild(d); 
       }
     }
-    function cargarInformacionGeneral(arr){
+    
+    // Cargar posts en el carrusel
+    function cargarInformacionGeneral(posts){
       const c = document.getElementById('carousel'); 
       const ctr = c.querySelector('.carousel-controls');
+      const loading = c.querySelector('.loading-text');
+      
+      if (loading) loading.remove();
+      
       c.querySelectorAll('.carousel-item').forEach(el => el.remove());
       
-      arr.forEach((it, idx) => {
+      const postsConImagen = posts.filter(post => post.imagen);
+      
+      if (postsConImagen.length === 0) {
+        const noData = document.createElement('div');
+        noData.className = 'loading-text';
+        noData.textContent = 'No hay información disponible';
+        c.insertBefore(noData, ctr);
+        return;
+      }
+      
+      postsConImagen.forEach((post, idx) => {
         const s = document.createElement('div');
         s.className = 'carousel-item' + (idx === 0 ? ' active' : '');
+        
+        const imageUrl = `data:image/jpeg;base64,${post.imagen}`;
+        
         s.innerHTML = `
-          <img src="${it.imagen}" alt="${it.titulo}">
-          <h3>${it.titulo}</h3>
-          <p>${it.descripcion}</p>
+          <img src="${imageUrl}" alt="${post.titulo}" onerror="this.style.display='none'">
+          <h3>${post.titulo}</h3>
+          <p>${post.contenido}</p>
+          <small style="color: #6c757d; display: block; margin-top: 10px;">
+            Publicado por: ${post.autor.nombre} | ${post.fecha_publicacion}
+          </small>
         `; 
         c.insertBefore(s, ctr);
       });
@@ -564,34 +569,46 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       showSlide(0);
     }
     
-    function cargarNoticias(arr){
-      const cont = document.getElementById('news-container'); 
+    // Cargar eventos/noticias
+    function cargarEventos(eventos){
+      const cont = document.getElementById('eventos-container'); 
       const t = cont.querySelector('h2'); 
+      const loading = cont.querySelector('.loading-text');
+      
+      if (loading) loading.remove();
       cont.innerHTML = ''; 
       cont.appendChild(t);
       
-      if(!arr.length){
+      if(!eventos.length){
         const m = document.createElement('div');
         m.className = 'loading-text';
-        m.textContent = 'No hay noticias disponibles';
+        m.textContent = 'No hay eventos disponibles';
         cont.appendChild(m);
         return;
       }
       
-      arr.forEach(n => {
+      eventos.forEach(evento => {
         const it = document.createElement('div');
         it.className = 'news-item';
-        const f = n.fecha || new Date().toLocaleDateString('es-UY');
+        const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-UY', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
         it.innerHTML = `
-          <div class="news-date">${f}</div>
-          <h3>${n.titulo}</h3>
-          <p>${n.descripcion}</p>
+          <div class="news-date">${fecha}</div>
+          <h3>${evento.titulo}</h3>
+          <p>${evento.descripcion}</p>
+          <small style="color: #6c757d; display: block; margin-top: 10px;">
+            Por: ${evento.autor.nombre}
+          </small>
         `;
         cont.appendChild(it);
       });
     }
 
-    // Funciones de autenticación
+    // Funciones de autenticación (se mantienen igual)
     async function logout() {
       try {
         const res = await fetch("/api/v1/user/logout", {
@@ -602,7 +619,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         const data = await res.json();
         if (data.success) {
           showNotification('Sesión cerrada correctamente', 'success');
-          // Recargar la página para actualizar el estado PHP
           setTimeout(() => {
             window.location.reload();
           }, 1000);
@@ -633,6 +649,46 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       }, 3000);
     }
 
+    // Cargar datos desde ambos endpoints
+    async function cargarDatos() {
+      try {
+        // Cargar posts para el carrusel
+        const postsResponse = await fetch('/api/v1/home/getPost');
+        if (!postsResponse.ok) throw new Error(`Error HTTP posts: ${postsResponse.status}`);
+        const postsData = await postsResponse.json();
+        
+        if (postsData.status === 'success') {
+          cargarInformacionGeneral(postsData.data);
+          startCarouselAutoAdvance();
+        }
+
+        // Cargar eventos para las noticias
+        const eventosResponse = await fetch('/api/v1/home/getEvento');
+        if (!eventosResponse.ok) throw new Error(`Error HTTP eventos: ${eventosResponse.status}`);
+        const eventosData = await eventosResponse.json();
+        
+        if (eventosData.status === 'success') {
+          cargarEventos(eventosData.data);
+        }
+
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        
+        const carousel = document.getElementById('carousel');
+        const eventos = document.getElementById('eventos-container');
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-text';
+        errorDiv.textContent = 'Error al cargar la información';
+        
+        carousel.querySelector('.loading-text')?.remove();
+        eventos.querySelector('.loading-text')?.remove();
+        
+        carousel.appendChild(errorDiv.cloneNode(true));
+        eventos.appendChild(errorDiv.cloneNode(true));
+      }
+    }
+
     // Auto-avance del carrusel
     function startCarouselAutoAdvance() {
       setInterval(() => {
@@ -640,52 +696,9 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       }, 5000);
     }
 
-    // Datos y inicialización
+    // Inicialización
     window.onload = () => {
-      const noticiasUTU = [
-        {
-          titulo: "Nuevas Carreras Técnicas 2025",
-          descripcion: "UTU incorpora carreras en Energías Renovables, Robótica Industrial y Desarrollo de Aplicaciones Móviles. Inscripciones abiertas.",
-          fecha: "15 Sep 2025"
-        },
-        {
-          titulo: "Convenio con Industria Nacional", 
-          descripcion: "Acuerdo estratégico con empresas uruguayas para prácticas laborales y formación dual. Oportunidades para estudiantes.",
-          fecha: "14 Sep 2025"
-        },
-        {
-          titulo: "Modernización de Laboratorios",
-          descripcion: "Nuevos laboratorios en Electrónica y TI equipados con tecnología de última generación para formación práctica.",
-          fecha: "13 Sep 2025"
-        },
-        {
-          titulo: "Programa de Becas 2025",
-          descripcion: "Convocatoria abierta para becas de estudio. Postulaciones hasta el 30 de octubre.",
-          fecha: "12 Sep 2025"
-        }
-      ];
-      
-      const infoInstitucional = [
-        {
-          titulo: "Inscripciones 2025",
-          descripcion: "Inscripciones abiertas hasta el 30 de septiembre para todas las carreras técnicas y tecnológicas.",
-          imagen: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&h=280&fit=crop"
-        },
-        {
-          titulo: "Campus Virtual",
-          descripcion: "Acceso a materiales, evaluaciones y clases en línea a través de nuestra plataforma educativa.",
-          imagen: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=500&h=280&fit=crop"
-        },
-        {
-          titulo: "Biblioteca Digital",
-          descripcion: "Más de 10,000 recursos educativos disponibles las 24 horas para toda la comunidad UTU.",
-          imagen: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500&h=280&fit=crop"
-        }
-      ];
-
-      cargarNoticias(noticiasUTU);
-      cargarInformacionGeneral(infoInstitucional);
-      startCarouselAutoAdvance();
+      cargarDatos();
     };
   </script>
 </body>

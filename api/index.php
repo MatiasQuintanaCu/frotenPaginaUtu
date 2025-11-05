@@ -59,6 +59,23 @@ switch ($apiVersion) {
                         break;
                 }
                 break; 
+            case 'home':
+                // Lógica para el recurso 'home'
+                switch ($action) {
+                    case 'getPost':
+                        require_once __DIR__ . '/v1/home/getPost.php';
+                        break;
+                    case 'getEvento':
+                        require_once __DIR__ . '/v1/home/getEvento.php';
+                        break;
+                    default:
+                        http_response_code(404);
+                        echo json_encode(["error" => "Acción no encontrada para el recurso 'home'."]);
+                        break;
+                }
+
+
+              break;
             case 'user':
                 // Lógica para el recurso 'user' - ACTUALIZADO CON NUEVAS RUTAS
                 switch ($action) {

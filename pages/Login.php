@@ -47,18 +47,18 @@
 
 <script>
 async function login() {
-    const correo = document.getElementById("correo").value;
-    const contraseña = document.getElementById("contraseña").value;
+    const email = document.getElementById("correo").value;
+    const password = document.getElementById("contraseña").value;
 
     const response = await fetch("http://localhost/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ correo, contraseña })
+        body: JSON.stringify({ email, password })
     });
 
     const text = await response.text();
-    document.getElementById("msg").textContent = text === "OK" ? "✅ Login exitoso" : "❌ Usuario o contraseña incorrectos";
+    document.getElementById("msg").textContent = text;
 }
 </script>
 </body>

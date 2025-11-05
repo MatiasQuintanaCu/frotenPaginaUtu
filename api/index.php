@@ -61,6 +61,9 @@ switch ($apiVersion) {
                     case 'login':
                         require_once __DIR__ . '/v1/user/login.php';
                         break;
+                    case 'create':
+                        require_once __DIR__ . '/v1/user/create.php';
+                        break;
                     default:
                         http_response_code(404);
                         echo json_encode(["error" => "Acción no encontrada para el recurso 'user'."]);

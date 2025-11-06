@@ -8,7 +8,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UTU - Universidad Técnica del Uruguay</title>
+  <title>UTU - Escuela tecnica Trinidad Flores</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -654,7 +654,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       <div class="nav-left">
         <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
         <div class="brand-text">
-          <span class="brand-title">UTU - Universidad Técnica del Uruguay</span>
+          <span class="brand-title">UTU - Escuela tecnica Trinidad Flores</span>
         </div>
       </div>
       
@@ -714,7 +714,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       <div class="footer-section">
         <div class="footer-logo">
           <h3>UTU</h3>
-          <p class="footer-subtitle">Universidad Técnica del Uruguay</p>
+          <p class="footer-subtitle">Escuela tecnica Trinidad Flores</p>
         </div>
         <p class="footer-description">
           Formando profesionales técnicos con excelencia académica desde 1942.
@@ -789,7 +789,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p class="copyright">
-          &copy; 2025 Universidad Técnica del Uruguay (UTU). Todos los derechos reservados.
+          &copy; 2025 Escuela tecnica Trinidad Flores (UTU). Todos los derechos reservados.
         </p>
         <div class="footer-legal">
           <a href="#">Política de Privacidad</a>

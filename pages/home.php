@@ -12,10 +12,11 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body { 
-      font-family: 'Arial', sans-serif; 
-      background: #f8f9fa; 
-      color: #333; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+      color: #2c3e50;
       line-height: 1.6; 
       min-height: 100vh;
       display: flex; 
@@ -24,134 +25,424 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 
     /* NAV */
     nav {
-      background: #003366;
+      background: linear-gradient(135deg, #003366 0%, #004d99 100%);
       color: white;
-      padding: 15px 30px;
+      padding: 0;
+      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0, 61, 130, 0.1);
+      padding: 20px 40px;
     }
-    .nav-left { display: flex; align-items: center; gap: 12px; }
-    .nav-left span { font-size: 1.3em; font-weight: 600; letter-spacing: 0.5px; }
-    .nav-center { display: flex; align-items: center; gap: 15px; }
-    .welcome-message { color: #ffcc00; font-weight: 500; font-size: 1em; }
+
+    .nav-left { 
+      display: flex; 
+      align-items: center; 
+      gap: 20px;
+    }
+
+    #LogoUtu { 
+      width: 60px; 
+      height: 60px;
+      border-radius: 50%; 
+      border: 3px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    #LogoUtu:hover {
+      transform: scale(1.05);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1.5em;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .brand-subtitle {
+      font-size: 0.85em;
+      color: #b8d4ff;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-center { 
+      display: flex; 
+      align-items: center; 
+      gap: 20px;
+    }
 
     /* Dropdown */
     .dropdown { position: relative; }
+    
     .dropdown-toggle {
-      background: none; border: none; color: white;
-      font-size: 1.1em; font-weight: 500; cursor: pointer;
-      padding: 10px 15px; border-radius: 6px;
-      display: flex; align-items: center; gap: 8px;
-      transition: background 0.2s;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: white;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 12px 24px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
-    .dropdown-toggle:hover { background: rgba(255,255,255,0.1); }
+    
+    .dropdown-toggle:hover { 
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
     .dropdown-menu {
-      position: absolute; top: 100%; right: 0;
-      background: white; border: 2px solid #e9ecef; border-radius: 8px;
-      min-width: 300px; opacity: 0; visibility: hidden;
-      transform: translateY(-5px); transition: all 0.2s;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 1000;
-      margin-top: 5px;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      min-width: 350px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      z-index: 1000;
+      overflow: hidden;
     }
-    .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .dropdown.active .dropdown-menu { 
+      opacity: 1; 
+      visibility: visible; 
+      transform: translateY(0); 
+    }
+
     .dropdown-item {
-      padding: 15px 20px; color: #333;
-      display: flex; align-items: center; gap: 15px;
-      border-bottom: 1px solid #e9ecef; transition: background 0.2s;
+      padding: 18px 24px;
+      color: #2c3e50;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.2s ease;
     }
+
     .dropdown-item:last-child { border-bottom: none; }
-    .dropdown-item:hover { background: #f8f9fa; }
-    .dropdown-item i { width: 20px; color: #003366; }
-    .contact-info strong { color: #003366; display: block; font-weight: 600; margin-bottom: 2px; }
-    .contact-info small { color: #6c757d; font-size: 0.9em; }
+    
+    .dropdown-item:hover { 
+      background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+      padding-left: 30px;
+    }
+
+    .dropdown-item i { 
+      width: 24px;
+      color: #003366;
+      font-size: 1.1em;
+      margin-top: 2px;
+    }
+
+    .contact-info strong { 
+      color: #003366;
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 1em;
+    }
+
+    .contact-info small { 
+      color: #6c757d;
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
 
     /* Botones */
     .login-btn, .logout-btn {
-      border: none; border-radius: 6px; padding: 12px 20px;
-      font-weight: 600; cursor: pointer; text-transform: uppercase;
-      font-size: 0.9em; letter-spacing: 0.5px; transition: background 0.2s;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95em;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .login-btn { background: #ffcc00; color: white; }
-    .login-btn:hover { background: #e55a2b; }
-    .logout-btn { background: #dc3545; color: white; }
-    .logout-btn:hover { background: #c82333; }
+
+    .login-btn { 
+      background: linear-gradient(135deg, #ffcc00 0%, #ff9500 100%);
+      color: white;
+    }
+
+    .login-btn:hover { 
+      background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4);
+    }
+
+    .logout-btn { 
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: white;
+    }
+
+    .logout-btn:hover { 
+      background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+    }
+
+    .welcome-message { 
+      color: #ffcc00;
+      font-weight: 600;
+      font-size: 1em;
+      padding: 10px 20px;
+      background: rgba(255,204,0,0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(255,204,0,0.3);
+    }
+
+    .user-menu { display: flex; align-items: center; gap: 15px; }
 
     /* Main */
     .main-container {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-      padding: 30px; max-width: 1400px; margin: 0 auto; flex: 1;
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 30px;
+      padding: 30px; 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      flex: 1;
     }
 
     /* Carousel */
     .carousel {
-      background: white; border-radius: 12px; padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08); border: 1px solid #e9ecef;
+      background: white; 
+      border-radius: 12px; 
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08); 
+      border: 1px solid rgba(0, 51, 102, 0.05);
+      transition: all 0.3s ease;
     }
+
+    .carousel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+
     .carousel h2 {
-      color: #003d82; text-align: center; margin-bottom: 30px;
-      font-size: 1.8em; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+      color: #003d82; 
+      text-align: center; 
+      margin-bottom: 30px;
+      font-size: 1.8em; 
+      font-weight: 700;
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 10px;
     }
-    .carousel-item { display: none; text-align: center; }
+
+    .carousel-item { 
+      display: none; 
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
     .carousel-item.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .carousel-item img {
-      width: 100%; max-width: 500px; height: 280px;
-      object-fit: cover; border-radius: 8px; border: 2px solid #e9ecef;
+      width: 100%; 
+      max-width: 500px; 
+      height: 280px;
+      object-fit: cover; 
+      border-radius: 8px; 
+      border: 2px solid #e9ecef;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-    .carousel-item h3 { color: #003d82; margin: 20px 0 10px; }
-    .carousel-item p { color: #6c757d; max-width: 480px; margin: 0 auto; }
+
+    .carousel-item h3 { 
+      color: #003d82; 
+      margin: 20px 0 10px;
+      font-weight: 700;
+    }
+
+    .carousel-item p { 
+      color: #6c757d; 
+      max-width: 480px; 
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
     .carousel-controls {
-      margin-top: 25px; display: flex; gap: 15px; justify-content: center;
+      margin-top: 25px; 
+      display: flex; 
+      gap: 15px; 
+      justify-content: center;
     }
+
     .carousel-controls button {
-      background: #003d82; color: white; border: none; border-radius: 6px;
-      padding: 10px 20px; cursor: pointer; font-weight: 500;
-      transition: background 0.2s;
+      background: linear-gradient(135deg, #003d82 0%, #004d99 100%);
+      color: white; 
+      border: none; 
+      border-radius: 8px;
+      padding: 10px 20px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
     }
-    .carousel-controls button:hover { background: #002a5c; }
-    .carousel-indicators { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+
+    .carousel-controls button:hover { 
+      background: linear-gradient(135deg, #002a5c 0%, #003d7a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 51, 102, 0.3);
+    }
+
+    .carousel-indicators { 
+      display: flex; 
+      gap: 8px; 
+      justify-content: center; 
+      margin-top: 20px;
+    }
+
     .indicator {
-      width: 10px; height: 10px; border-radius: 50%; background: #dee2e6; cursor: pointer;
-      transition: background 0.2s;
+      width: 10px; 
+      height: 10px; 
+      border-radius: 50%; 
+      background: #dee2e6; 
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .indicator.active { background: #ff6b35; }
+
+    .indicator:hover {
+      background: #adb5bd;
+      transform: scale(1.1);
+    }
+
+    .indicator.active { 
+      background: #ff6b35;
+      transform: scale(1.2);
+    }
 
     /* News */
     .news-scroll {
-      background: white; border-radius: 12px; padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08); border: 1px solid #e9ecef;
-      max-height: 600px; overflow-y: auto;
+      background: white; 
+      border-radius: 12px; 
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08); 
+      border: 1px solid rgba(0, 51, 102, 0.05);
+      max-height: 600px; 
+      overflow-y: auto;
+      transition: all 0.3s ease;
     }
+
+    .news-scroll:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+
     .news-scroll h2 {
-      color: #003d82; margin-bottom: 25px; font-size: 1.8em; font-weight: 600;
-      display: flex; align-items: center; gap: 10px;
-      border-bottom: 2px solid #e9ecef; padding-bottom: 15px;
+      color: #003d82; 
+      margin-bottom: 25px; 
+      font-size: 1.8em; 
+      font-weight: 700;
+      display: flex; 
+      align-items: center; 
+      gap: 10px;
+      border-bottom: 2px solid #e9ecef; 
+      padding-bottom: 15px;
     }
+
     .news-item {
-      background: #f8f9fa; margin-bottom: 20px; border-radius: 8px; padding: 20px;
-      border-left: 4px solid #ff6b35; position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+      margin-bottom: 20px; 
+      border-radius: 8px; 
+      padding: 20px;
+      border-left: 4px solid #ff6b35; 
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    .news-item:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .news-item h3 { margin: 0 0 10px; color: #003d82; padding-right: 80px; }
-    .news-item p { color: #495057; }
+
+    .news-item:hover { 
+      transform: translateX(5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-left-color: #003d82;
+    }
+
+    .news-item h3 { 
+      margin: 0 0 10px; 
+      color: #003d82; 
+      padding-right: 80px;
+      font-weight: 700;
+    }
+
+    .news-item p { 
+      color: #495057;
+      line-height: 1.6;
+    }
+
     .news-date {
-      position: absolute; top: 15px; right: 15px;
-      background: #003d82; color: white; padding: 4px 8px; border-radius: 4px;
-      font-size: 0.8em; font-weight: 500;
+      position: absolute; 
+      top: 15px; 
+      right: 15px;
+      background: linear-gradient(135deg, #003d82 0%, #004d99 100%);
+      color: white; 
+      padding: 4px 8px; 
+      border-radius: 4px;
+      font-size: 0.8em; 
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0, 51, 102, 0.2);
     }
+
     .news-scroll::-webkit-scrollbar { width: 6px; }
-    .news-scroll::-webkit-scrollbar-thumb { background: #003d82; border-radius: 3px; }
-    #LogoUtu { width: 10vh; border-radius: 200px; }
-    .user-menu { display: flex; align-items: center; gap: 15px; }
-    .loading-text { text-align: center; color: #666; margin: 20px 0; }
-    .error-text { text-align: center; color: #dc3545; margin: 20px 0; }
+    .news-scroll::-webkit-scrollbar-thumb { 
+      background: linear-gradient(135deg, #003d82 0%, #004d99 100%);
+      border-radius: 3px;
+    }
+
+    .loading-text { 
+      text-align: center; 
+      color: #666; 
+      margin: 20px 0;
+      font-size: 1.1em;
+    }
+
+    .error-text { 
+      text-align: center; 
+      color: #dc3545; 
+      margin: 20px 0;
+      font-size: 1.1em;
+    }
 
     /* FOOTER STYLES */
     .site-footer {
-      background-color: #003366;
+      background: linear-gradient(135deg, #002a52 0%, #003d7a 100%);
       color: #e0e0e0;
       padding: 60px 0 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -173,7 +464,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       padding: 0 15px;
     }
 
-    /* Logo y descripción */
     .footer-logo h3 {
       color: #4da6ff;
       font-size: 32px;
@@ -196,7 +486,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       margin-bottom: 20px;
     }
 
-    /* Redes sociales */
     .footer-social {
       display: flex;
       gap: 12px;
@@ -224,7 +513,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       box-shadow: 0 5px 15px rgba(77, 166, 255, 0.3);
     }
 
-    /* Títulos de sección */
     .footer-title {
       color: #ffffff;
       font-size: 18px;
@@ -235,7 +523,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       display: inline-block;
     }
 
-    /* Listas */
     .footer-list {
       list-style: none;
       padding: 0;
@@ -261,7 +548,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       padding-left: 5px;
     }
 
-    /* Contacto */
     .footer-contact {
       list-style: none;
       padding: 0;
@@ -284,7 +570,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       min-width: 20px;
     }
 
-    /* Barra inferior */
     .footer-bottom {
       background: rgba(0, 0, 0, 0.3);
       padding: 25px 0;
@@ -321,6 +606,21 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 
     /* Responsive */
     @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .nav-left {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .brand-title {
+        font-size: 1.2em;
+      }
+
       .main-container {
         grid-template-columns: 1fr;
       }
@@ -350,37 +650,41 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 
   <!-- NAV -->
   <nav>
-    <div class="nav-left">
-      <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
-      <span>UTU - Universidad Técnica del Uruguay</span>
-    </div>
-    
-    <div class="nav-center">
-      <div class="dropdown" id="contactDropdown">
-        <button class="dropdown-toggle" onclick="toggleDropdown()">
-          <i class="fas fa-phone-alt"></i> Contacto <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
-        </button>
-        <div class="dropdown-menu">
-          <div class="dropdown-item"><i class="fas fa-map-marker-alt"></i><div class="contact-info"><strong>Sede Central</strong><small>25 de agosto Nº 427 esq. Batlle y Ordoñez</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-phone"></i><div class="contact-info"><strong>Teléfono</strong><small>4364 8962 - 4364 2426</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-envelope"></i><div class="contact-info"><strong>Correo Institucional</strong><small>tecnicatrinidad@gmail.com</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-clock"></i><div class="contact-info"><strong>Horario</strong><small>Lun a Vie: 7:00 - 23:30</small></div></div>
+    <div class="nav-container">
+      <div class="nav-left">
+        <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
+        <div class="brand-text">
+          <span class="brand-title">UTU - Universidad Técnica del Uruguay</span>
         </div>
       </div>
-    </div>
-    
-    <div class="nav-right">
-      <div class="user-menu" id="userMenu">
-        <?php if ($isLoggedIn && !empty($userName)): ?>
-          <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($userName); ?>!</div>
-          <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Cerrar Sesión
+      
+      <div class="nav-center">
+        <div class="dropdown" id="contactDropdown">
+          <button class="dropdown-toggle" onclick="toggleDropdown()">
+            <i class="fas fa-phone-alt"></i> Contacto <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
           </button>
-        <?php else: ?>
-          <button class="login-btn" onclick="goToLogin()">
-            <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder
-          </button>
-        <?php endif; ?>
+          <div class="dropdown-menu">
+            <div class="dropdown-item"><i class="fas fa-map-marker-alt"></i><div class="contact-info"><strong>Sede Central</strong><small>25 de agosto Nº 427 esq. Batlle y Ordoñez</small></div></div>
+            <div class="dropdown-item"><i class="fas fa-phone"></i><div class="contact-info"><strong>Teléfono</strong><small>4364 8962 - 4364 2426</small></div></div>
+            <div class="dropdown-item"><i class="fas fa-envelope"></i><div class="contact-info"><strong>Correo Institucional</strong><small>tecnicatrinidad@gmail.com</small></div></div>
+            <div class="dropdown-item"><i class="fas fa-clock"></i><div class="contact-info"><strong>Horario</strong><small>Lun a Vie: 7:00 - 23:30</small></div></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-right">
+        <div class="user-menu" id="userMenu">
+          <?php if ($isLoggedIn && !empty($userName)): ?>
+            <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($userName); ?>!</div>
+            <button class="logout-btn" onclick="logout()">
+              <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Cerrar Sesión
+            </button>
+          <?php else: ?>
+            <button class="login-btn" onclick="goToLogin()">
+              <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder
+            </button>
+          <?php endif; ?>
+        </div>
       </div>
     </div>
   </nav>
@@ -407,7 +711,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-container">
-      <!-- Información institucional -->
       <div class="footer-section">
         <div class="footer-logo">
           <h3>UTU</h3>
@@ -436,7 +739,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         </div>
       </div>
 
-      <!-- Enlaces rápidos -->
       <div class="footer-section">
         <h4 class="footer-title">Enlaces Rápidos</h4>
         <ul class="footer-list">
@@ -449,7 +751,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         </ul>
       </div>
 
-      <!-- Servicios -->
       <div class="footer-section">
         <h4 class="footer-title">Servicios</h4>
         <ul class="footer-list">
@@ -462,7 +763,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         </ul>
       </div>
 
-      <!-- Contacto -->
       <div class="footer-section">
         <h4 class="footer-title">Contacto</h4>
         <ul class="footer-contact">
@@ -486,7 +786,6 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       </div>
     </div>
 
-    <!-- Barra inferior -->
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p class="copyright">

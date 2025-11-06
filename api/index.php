@@ -1,5 +1,5 @@
 <?php
-// api/index.php - VERSIÓN DE DEPURACIÓN
+// api/index.php - VERSIÓN ACTUALIZADA
 
 /*
  * PASO 1: Forzar la visualización de TODOS los errores de PHP.
@@ -9,11 +9,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 // Establecemos las cabeceras al principio para que los mensajes de depuración se vean como JSON
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
+// Manejar preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 /*
  * PASO 2: Verificar que el router recibe el parámetro 'request' desde .htaccess.
@@ -25,13 +31,11 @@ if ($request_uri === null) {
     die(json_encode(["error" => "El router de la API no recibió el parámetro 'request'."]));
 }
 
-
 // Procesamos las variables como antes
 $parts = explode('/', filter_var(rtrim($request_uri, '/'), FILTER_SANITIZE_URL));
 $apiVersion = array_shift($parts);
 $resource = array_shift($parts) ?? null;
 $action = array_shift($parts) ?? null;
-
 
 /*
  * PASO 3: Verificar qué valores tienen las variables.
@@ -42,20 +46,7 @@ $action = array_shift($parts) ?? null;
 
 switch ($apiVersion) {
     case 'v1':
-        switch ($resource) {
-            case 'core':
-                // Lógica para el recurso 'core'
-                switch ($action) {
-                    case 'logger':
-                        require_once __DIR__ . '/v1/core/logger.php';
-                        break;
-                    default:
-                        http_response_code(404);
-                        echo json_encode(["error" => "Acción no encontrada para el recurso 'core'."]);
-                        break;
-                }
-                break;
-                
+        switch ($resource) {                
             case 'config':
                 // Lógica para el recurso 'config'
                 switch ($action) {
@@ -69,35 +60,26 @@ switch ($apiVersion) {
                 }
                 break; 
             case 'user':
-                // Lógica para el recurso 'user'
+                // Lógica para el recurso 'user' - ACTUALIZADO CON NUEVAS RUTAS
                 switch ($action) {
                     case 'login':
                         require_once __DIR__ . '/v1/user/login.php';
                         break;
-                    case 'logout':
-                        require_once __DIR__ . '/v1/user/logout.php';
-                        break;
                     case 'create':
                         require_once __DIR__ . '/v1/user/create.php';
                         break;
-                    case 'validate_session':
-                        require_once __DIR__ . '/v1/user/validate_session.php';
+                    case 'check_session':    // 🆕 NUEVA RUTA
+                        require_once __DIR__ . '/v1/user/check_session.php';
                         break;
-                    case 'user_session_data':
-                        require_once __DIR__ . '/v1/user/get_user_session_data.php';
-                        break;
-                    case 'user_utils':
-                        require_once __DIR__ . '/v1/user/utils.php';
+                    case 'logout':          // 🆕 NUEVA RUTA
+                        require_once __DIR__ . '/v1/user/logout.php';
                         break;
                     default:
                         http_response_code(404);
                         echo json_encode(["error" => "Acción no encontrada para el recurso 'user'."]);
                         break;
                 }
-                      break;
-            
-            break;
-
+                break;
             default:
                 // Si el recurso no existe dentro de la v1 (este es el caso para 'lalla')
                 http_response_code(404);
@@ -105,7 +87,6 @@ switch ($apiVersion) {
                 break;
         }
         break;
-
     default:
         // Si la versión de la API no es 'v1'
         http_response_code(404);

@@ -1,12 +1,30 @@
-# Archivo: public/.htaccess
+# ===========================================================
+# .htaccess para proyecto con frontend y API en XAMPP
+# ===========================================================
+
 <IfModule mod_rewrite.c>
-    # Activa el módulo de reescritura
     RewriteEngine On
+    RewriteBase /
 
-    # Si la ruta solicitada es un archivo o directorio existente, no hacer nada (ej: /assets/style.css)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # Si el archivo o carpeta existe, no se reescribe
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-    # Redirige todo lo demás a index.php. La bandera [L] significa "última regla"
-    RewriteRule ^(.*)$ index.php [L]
+    # -------------------------------------------------------
+    # API: redirige todo lo que empiece con "api/"
+    # Ejemplo: /api/v1/user/login → api/index.php?request=v1/user/login
+    # -------------------------------------------------------
+    RewriteRule ^api/(.*)$ api/index.php?request=$1 [QSA,L]
+
+    # -------------------------------------------------------
+    # FRONTEND: cualquier otra cosa va a index.php
+    # -------------------------------------------------------
+    RewriteRule ^ index.php [L]
 </IfModule>
+
+# Seguridad básica
+Options -Indexes
+<Files .htaccess>
+    Require all denied
+</Files>

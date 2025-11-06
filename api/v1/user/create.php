@@ -4,97 +4,105 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=UTF-8");
 
+// Habilitar errores para desarrollo
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-require_once __DIR__ . '/../../../Cofing/DbConect.php';
+// Incluir archivos necesarios - RUTA CORREGIDA
+include_once __DIR__ . '/../config/database.php';
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-   http_response_code(200);
-   exit;
+function sendError($message, $code = 500) {
+    http_response_code($code);
+    echo json_encode(["error" => $message]);
+    exit;
 }
-
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-   http_response_code(405);
-   echo json_encode(["error" => "Método no permitido"]);
-   exit;
-}
-
-
-$data = json_decode(file_get_contents("php://input"), true);
-
-
-if (
-   !isset($data['nombre']) ||
-   !isset($data['correo']) ||
-   !isset($data['contrasena'])
-) {
-   http_response_code(400);
-   echo json_encode(["error" => "Faltan datos obligatorios"]);
-   exit;
-}
-
-
-// 📦 Obtener conexión desde la clase Database
-$database = new Database();
-$conn = $database->getConnection();
-
 
 try {
-   // Verificar si el correo ya existe
-   $check = $conn->prepare("SELECT id_usuario FROM usuarios WHERE correo = :correo");
-   $check->execute([":correo" => $data['correo']]);
-   if ($check->rowCount() > 0) {
-       http_response_code(409);
-       echo json_encode(["error" => "El correo ya está registrado"]);
-       exit;
-   }
+    // Verificar método
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        http_response_code(200);
+        exit;
+    }
 
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendError("Método no permitido", 405);
+    }
 
-   // Encriptar contraseña
-   $hashed = password_hash($data['contrasena'], PASSWORD_DEFAULT);
+    // Obtener datos JSON
+    $input = file_get_contents("php://input");
+    if (empty($input)) {
+        sendError("No se recibieron datos", 400);
+    }
 
+    $data = json_decode($input, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        sendError("JSON inválido: " . json_last_error_msg(), 400);
+    }
 
-   $sql = "INSERT INTO usuarios (nombre, correo, contrasena, rol)
-           VALUES (:nombre, :correo, :contrasena, :rol)";
-   $stmt = $conn->prepare($sql);
-   $stmt->execute([
-       ':nombre' => $data['nombre'],
-       ':correo' => $data['correo'],
-       ':contrasena' => $hashed,
-       ':rol' => 'usuario'
-   ]);
+    // Validar campos requeridos
+    if (empty($data['nombre']) || empty($data['correo']) || empty($data['contrasena'])) {
+        sendError("Faltan datos obligatorios: nombre, correo o contraseña", 400);
+    }
 
+    // Sanitizar y validar
+    $nombre = trim($data['nombre']);
+    $correo = trim($data['correo']);
+    $contrasena = $data['contrasena'];
 
-   http_response_code(201);
-   echo json_encode([
-       "message" => "Usuario registrado correctamente",
-       "id_usuario" => $conn->lastInsertId()
-   ]);
+    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        sendError("Correo electrónico inválido", 400);
+    }
 
+    if (strlen($contrasena) < 6) {
+        sendError("La contraseña debe tener al menos 6 caracteres", 400);
+    }
+
+    // Conectar a la base de datos
+    $database = new Database();
+    $db = $database->getConnection();
+    
+    if (!$db) {
+        sendError("No se puede conectar a la base de datos", 503);
+    }
+
+    // Verificar si el correo ya existe
+    $check_sql = "SELECT `id_usuario` FROM `usuarios` WHERE `correo` = :correo";
+    $check_stmt = $db->prepare($check_sql);
+    $check_stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+    $check_stmt->execute();
+
+    if ($check_stmt->rowCount() > 0) {
+        sendError("El correo ya está registrado", 409);
+    }
+
+    // Hash de la contraseña
+    $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
+
+    // Insertar nuevo usuario
+    $insert_sql = "INSERT INTO `usuarios`(`nombre`, `correo`, `contrasena`, `rol`) 
+                   VALUES (:nombre, :correo, :contrasena, :rol)";
+    
+    $insert_stmt = $db->prepare($insert_sql);
+    $insert_stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+    $insert_stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+    $insert_stmt->bindParam(':contrasena', $hashed_password, PDO::PARAM_STR);
+    $insert_stmt->bindValue(':rol', 'usuario', PDO::PARAM_STR);
+
+    if ($insert_stmt->execute()) {
+        http_response_code(201);
+        echo json_encode([
+            "status" => "success",
+            "message" => "Usuario registrado correctamente",
+            "id_usuario" => $db->lastInsertId()
+        ]);
+    } else {
+        throw new Exception("Error al ejecutar la inserción");
+    }
 
 } catch (PDOException $e) {
-   http_response_code(500);
-   echo json_encode(["error" => "Error en la base de datos", "detalle" => $e->getMessage()]);
+    error_log("Error PDO en create.php: " . $e->getMessage());
+    sendError("Error de base de datos: " . $e->getMessage());
+} catch (Exception $e) {
+    error_log("Error general en create.php: " . $e->getMessage());
+    sendError("Error del servidor: " . $e->getMessage());
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

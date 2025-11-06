@@ -1,36 +1,30 @@
-# ##############################################################################
-# ## ARCHIVO .HTACCESS CON DOS ROUTERS (FRONTEND Y API)
-# ##############################################################################
+# ===========================================================
+# .htaccess para proyecto con frontend y API en XAMPP
+# ===========================================================
 
-# Activar el motor de reescritura de URLs
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-    
-    # Define el archivo por defecto para el directorio raíz. Apunta al router del frontend.
-    DirectoryIndex index.php
 
-    # --------------------------------------------------------------------------
-    # REGLA 1: ENRUTAMIENTO DE LA API
-    # Todas las peticiones que comiencen con "api/" se envían al router de la API.
-    # --------------------------------------------------------------------------
-    RewriteRule ^api/(.*)$ api/index.php?request=v1/$1 [QSA,L]
+    # Si el archivo o carpeta existe, no se reescribe
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-    # --------------------------------------------------------------------------
-    # REGLA 2: ENRUTAMIENTO DEL FRONTEND
-    # Si la petición NO es un archivo existente Y NO es un directorio existente,
-    # se envía al router principal del frontend (index.php).
-    # --------------------------------------------------------------------------
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . index.php [L]
+    # -------------------------------------------------------
+    # API: redirige todo lo que empiece con "api/"
+    # Ejemplo: /api/v1/user/login → api/index.php?request=v1/user/login
+    # -------------------------------------------------------
+    RewriteRule ^api/(.*)$ api/index.php?request=$1 [QSA,L]
 
+    # -------------------------------------------------------
+    # FRONTEND: cualquier otra cosa va a index.php
+    # -------------------------------------------------------
+    RewriteRule ^ index.php [L]
 </IfModule>
 
-# --- El resto de las configuraciones de seguridad y caché pueden seguir igual ---
+# Seguridad básica
 Options -Indexes
 <Files .htaccess>
     Require all denied
 </Files>
-
-#

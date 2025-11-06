@@ -213,38 +213,199 @@
     .news-scroll::-webkit-scrollbar { width: 6px; }
     .news-scroll::-webkit-scrollbar-thumb { background: #003d82; border-radius: 3px; }
 
-    /* Footer */
-    footer {
-      background: #003366;
-      color: white;
-      padding: 20px 10px;
-      text-align: center;
-      margin-top: auto;
-    }
-    .footer-content {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .footer-content p { margin-bottom: 10px; font-size: 14px; }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .footer-links a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.3s ease;
-    }
-    .footer-links a:hover { color: #ffcc00; }
+  
+    /* FOOTER STYLES */
+.site-footer {
+      background-color: #003366;
+  color: #e0e0e0;
+  padding: 60px 0 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 80px;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
 
-    #LogoUtu { width: 10vh; border-radius: 200px; }
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
 
-    @media (max-width: 768px) {
-      .main-container { grid-template-columns: 1fr; }
-    }
+.footer-section {
+  padding: 0 15px;
+}
+
+/* Logo y descripción */
+.footer-logo h3 {
+  color: #4da6ff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  letter-spacing: 2px;
+}
+
+.footer-subtitle {
+  color: #b8b8b8;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+  font-weight: 500;
+}
+
+.footer-description {
+  color: #b8b8b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Redes sociales */
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(77, 166, 255, 0.1);
+  border: 1px solid rgba(77, 166, 255, 0.3);
+  border-radius: 50%;
+  color: #4da6ff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  background: #4da6ff;
+  color: #1a1a2e;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(77, 166, 255, 0.3);
+}
+
+/* Títulos de sección */
+.footer-title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #4da6ff;
+  display: inline-block;
+}
+
+/* Listas */
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 12px;
+}
+
+.footer-list a,
+.footer-legal a {
+  color: #b8b8b8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-list a:hover,
+.footer-legal a:hover {
+  color: #4da6ff;
+  padding-left: 5px;
+}
+
+/* Contacto */
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #b8b8b8;
+}
+
+.footer-contact i {
+  color: #4da6ff;
+  margin-right: 12px;
+  margin-top: 3px;
+  font-size: 16px;
+  min-width: 20px;
+}
+
+/* Barra inferior */
+.footer-bottom {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 25px 0;
+  border-top: 1px solid rgba(77, 166, 255, 0.2);
+}
+
+.footer-bottom-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.copyright {
+  color: #b8b8b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.separator {
+  color: rgba(77, 166, 255, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 40px 0 0;
+  }
+  
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 20px;
+  }
+  
+  .footer-legal {
+    justify-content: center;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -291,17 +452,106 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 UTU - Universidad Técnica del Uruguay. Todos los derechos reservados.</p>
-      <div class="footer-links">
-        <a href="#">Política de Privacidad</a>
-        <a href="#">Términos de Servicio</a>
-        <a href="Login.html">Acceso</a>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <!-- Información institucional -->
+    <div class="footer-section">
+      <div class="footer-logo">
+        <h3>UTU</h3>
+        <p class="footer-subtitle">Universidad Técnica del Uruguay</p>
+      </div>
+      <p class="footer-description">
+        Formando profesionales técnicos con excelencia académica desde 1942.
+        Educación de calidad para el desarrollo del país.
+      </p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook" class="social-link">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" aria-label="Twitter" class="social-link">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" aria-label="Instagram" class="social-link">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" aria-label="LinkedIn" class="social-link">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" aria-label="YouTube" class="social-link">
+          <i class="fab fa-youtube"></i>
+        </a>
       </div>
     </div>
-  </footer>
+
+    <!-- Enlaces rápidos -->
+    <div class="footer-section">
+      <h4 class="footer-title">Enlaces Rápidos</h4>
+      <ul class="footer-list">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Sobre Nosotros</a></li>
+        <li><a href="#">Carreras y Cursos</a></li>
+        <li><a href="#">Inscripciones</a></li>
+        <li><a href="#">Noticias</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+
+    <!-- Servicios -->
+    <div class="footer-section">
+      <h4 class="footer-title">Servicios</h4>
+      <ul class="footer-list">
+        <li><a href="#">Biblioteca Virtual</a></li>
+        <li><a href="#">Plataforma Educativa</a></li>
+        <li><a href="#">Bedelía Online</a></li>
+        <li><a href="Login.html">Portal Estudiantes</a></li>
+        <li><a href="#">Bolsa de Trabajo</a></li>
+        <li><a href="#">Mesa de Ayuda</a></li>
+      </ul>
+    </div>
+
+    <!-- Contacto -->
+    <div class="footer-section">
+      <h4 class="footer-title">Contacto</h4>
+      <ul class="footer-contact">
+        <li>
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Av. Uruguay 1234, Montevideo<br>CP 11100, Uruguay</span>
+        </li>
+        <li>
+          <i class="fas fa-phone"></i>
+          <span>+598 2XXX XXXX</span>
+        </li>
+        <li>
+          <i class="fas fa-envelope"></i>
+          <span>info@utu.edu.uy</span>
+        </li>
+        <li>
+          <i class="fas fa-clock"></i>
+          <span>Lun - Vie: 8:00 - 18:00</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Barra inferior -->
+  <div class="footer-bottom">
+    <div class="footer-bottom-content">
+      <p class="copyright">
+        &copy; 2025 Universidad Técnica del Uruguay (UTU). Todos los derechos reservados.
+      </p>
+      <div class="footer-legal">
+        <a href="#">Política de Privacidad</a>
+        <span class="separator">|</span>
+        <a href="#">Términos y Condiciones</a>
+        <span class="separator">|</span>
+        <a href="#">Accesibilidad</a>
+        <span class="separator">|</span>
+        <a href="#">Mapa del Sitio</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
   <script>
     // Dropdown

@@ -38,6 +38,10 @@ switch ($request_uri) {
         // Lógica de Login
         require __DIR__  . '/pages/login.php';
         break;
+    case 'adminDashboard':
+        // Lógica del Panel de Administración
+        require __DIR__  . '/pages/adminDashboard.php';
+        break;
     default:
         // Manejo de error 404
         http_response_code(404);

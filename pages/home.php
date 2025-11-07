@@ -109,7 +109,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
               ¡Bienvenido, <?php echo htmlspecialchars($userName); ?>!
             </div>
             <button onclick="logout()" 
-                    class="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold px-7 py-3 rounded-lg hover:from-red-700 hover:to-red-800 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 uppercase tracking-wide">
+                    class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-600 text-white font-semibold px-7 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 uppercase tracking-wide">
               <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
             </button>
           <?php else: ?>
@@ -149,7 +149,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
     </div>
 
     <!-- Eventos/Noticias -->
-    <div class="news-section bg-white rounded-xl p-10 shadow-xl border border-utu-blue border-opacity-5">
+    <div class="news-section  rounded-xl p-10  border border-utu-blue border-opacity-5">
       <h2 class="text-3xl font-bold text-blue-900 flex items-center gap-4 mb-8 pb-5 border-b-2 border-gray-100">
         <i class="fas fa-calendar-alt text-utu-orange text-4xl"></i> Eventos y Noticias
       </h2>

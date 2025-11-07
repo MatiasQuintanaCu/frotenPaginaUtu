@@ -8,7 +8,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UTU - Universidad Técnica del Uruguay</title>
+  <title>UTU - Escuela tecnica Trinidad flores</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -60,7 +60,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
                alt="LogoUtu"
                class="w-16 h-16 rounded-full border-2 border-white border-opacity-20 shadow-lg hover:scale-105 transition-transform duration-300">
           <div class="flex flex-col text-center lg:text-left">
-            <span class="text-2xl font-bold tracking-wide">UTU - Universidad Técnica del Uruguay</span>
+            <span class="text-2xl font-bold tracking-wide">UTU -  Escuela tecnica Trinidad flores</span>
           </div>
         </div>
         
@@ -168,7 +168,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         <div class="footer-section px-4">
           <div class="footer-logo">
             <h3 class="text-blue-400 text-3xl font-bold mb-1 tracking-wider">UTU</h3>
-            <p class="footer-subtitle text-gray-400 text-sm mb-4 font-medium">Universidad Técnica del Uruguay</p>
+            <p class="footer-subtitle text-gray-400 text-sm mb-4 font-medium"> Escuela tecnica Trinidad flores</p>
           </div>
           <p class="footer-description text-gray-400 text-sm leading-relaxed mb-5">
             Formando profesionales técnicos con excelencia académica desde 1942.
@@ -247,7 +247,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
     <!-- Footer Bottom -->
     <div class="footer-bottom bg-black bg-opacity-30 py-6 border-t border-blue-400 border-opacity-20">
       <div class="footer-bottom-content max-w-6xl mx-auto px-9 flex flex-col md:flex-row justify-between items-center gap-5 flex-wrap">
-        <p class="copyright text-gray-400 text-sm">&copy; 2025 Universidad Técnica del Uruguay (UTU). Todos los derechos reservados.</p>
+        <p class="copyright text-gray-400 text-sm">&copy; 2025 Escuela tecnica Trinidad flores (UTU). Todos los derechos reservados.</p>
         <div class="footer-legal flex items-center gap-2 flex-wrap justify-center text-sm">
           <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">Política de Privacidad</a>
           <span class="separator text-blue-400 text-opacity-40">|</span>

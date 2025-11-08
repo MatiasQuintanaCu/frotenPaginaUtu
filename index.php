@@ -38,6 +38,11 @@ switch ($request_uri) {
         // Lógica de Login
         require __DIR__  . '/pages/login.php';
         break;
+    case 'chat':
+        // Página de Chat
+        require __DIR__  . '/pages/chat.php';
+        break;
+
     default:
         // Manejo de error 404
         http_response_code(404);

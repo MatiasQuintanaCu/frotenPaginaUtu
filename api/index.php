@@ -75,7 +75,25 @@ switch ($apiVersion) {
                 }
 
 
+
               break;
+  case 'mensajeria':
+    switch ($action) {
+        case 'getUsers':
+            require_once __DIR__ . '/v1/mensajeria/getUsers.php';
+            break;
+        case 'sendMessage':
+            require_once __DIR__ . '/v1/mensajeria/sendMessage.php';
+            break;
+        case 'getMessages':
+            require_once __DIR__ . '/v1/mensajeria/getMessage.php';
+            break;
+        default:
+            http_response_code(404);
+            echo json_encode(["error" => "Acción no encontrada para el recurso 'mensajeria'."]);
+            break;
+    }
+    break;
             case 'user':
                 // Lógica para el recurso 'user' - ACTUALIZADO CON NUEVAS RUTAS
                 switch ($action) {

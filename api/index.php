@@ -82,6 +82,9 @@ switch ($apiVersion) {
         case 'getUsers':
             require_once __DIR__ . '/v1/mensajeria/getUsers.php';
             break;
+        case 'getConversations':
+            require_once __DIR__ . '/v1/mensajeria/getConversations.php';
+            break;
         case 'sendMessage':
             require_once __DIR__ . '/v1/mensajeria/sendMessage.php';
             break;

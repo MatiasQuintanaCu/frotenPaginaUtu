@@ -540,7 +540,7 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
     }
 
     function goToGestion() {
-      window.location.href = 'gestion-noticias';
+      window.location.href = 'adminDashboard';
     }
 
     function goToLogin() {

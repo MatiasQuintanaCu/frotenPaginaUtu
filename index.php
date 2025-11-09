@@ -42,6 +42,11 @@ switch ($request_uri) {
         // Lógica del Panel de Administración
         require __DIR__  . '/pages/adminDashboard.php';
         break;
+    case 'chat':
+        // Página de Chat
+        require __DIR__  . '/pages/chat.php';
+        break;
+
     default:
         // Manejo de error 404
         http_response_code(404);

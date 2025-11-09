@@ -1,244 +1,490 @@
-<!DOCTYPE html>
-<html lang="es">
 <?php
 session_start();
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
+$userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
 ?>
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UTU - Universidad Técnica del Uruguay</title>
+  <title>UTU - Escuela Técnica Trinidad Flores</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'utu-blue': '#003366',
+            'utu-blue-light': '#004d99',
+            'utu-orange': '#ff6b35',
+            'utu-yellow': '#ffcc00',
+            'utu-green': '#27ae60',
+            'utu-purple': '#8e44ad',
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Arial', sans-serif; 
-      background: #f8f9fa; 
-      color: #333; 
-      line-height: 1.6; 
-      min-height: 100vh;
-      display: flex; 
-      flex-direction: column; 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    /* NAV */
-    nav {
-      background: #003366;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0, 61, 130, 0.1);
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
-    .nav-left { display: flex; align-items: center; gap: 12px; }
-    .nav-left span { font-size: 1.3em; font-weight: 600; letter-spacing: 0.5px; }
-    .nav-center { display: flex; align-items: center; gap: 15px; }
-    .welcome-message { color: #ffcc00; font-weight: 500; font-size: 1em; }
-
-    /* Dropdown */
-    .dropdown { position: relative; }
-    .dropdown-toggle {
-      background: none; border: none; color: white;
-      font-size: 1.1em; font-weight: 500; cursor: pointer;
-      padding: 10px 15px; border-radius: 6px;
-      display: flex; align-items: center; gap: 8px;
-      transition: background 0.2s;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
-    .dropdown-toggle:hover { background: rgba(255,255,255,0.1); }
+    
+    .carousel-item.active {
+      animation: fadeIn 0.8s ease;
+    }
+    .dropdown.active .dropdown-menu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) !important;
+    }
     .dropdown-menu {
-      position: absolute; top: 100%; right: 0;
-      background: white; border: 2px solid #e9ecef; border-radius: 8px;
-      min-width: 300px; opacity: 0; visibility: hidden;
-      transform: translateY(-5px); transition: all 0.2s;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 1000;
-      margin-top: 5px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
     }
-    .dropdown.active .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-item {
-      padding: 15px 20px; color: #333;
-      display: flex; align-items: center; gap: 15px;
-      border-bottom: 1px solid #e9ecef; transition: background 0.2s;
+    
+    /* Nuevos estilos mejorados */
+    .nav-glass {
+      background: rgba(0, 51, 102, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .dropdown-item:last-child { border-bottom: none; }
-    .dropdown-item:hover { background: #f8f9fa; }
-    .dropdown-item i { width: 20px; color: #003366; }
-    .contact-info strong { color: #003366; display: block; font-weight: 600; margin-bottom: 2px; }
-    .contact-info small { color: #6c757d; font-size: 0.9em; }
-
-    /* Botones */
-    .login-btn, .logout-btn {
-      border: none; border-radius: 6px; padding: 12px 20px;
-      font-weight: 600; cursor: pointer; text-transform: uppercase;
-      font-size: 0.9em; letter-spacing: 0.5px; transition: background 0.2s;
+    
+    .btn-modern {
+      background: linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to));
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .login-btn { background: #ffcc00; color: white; }
-    .login-btn:hover { background: #e55a2b; }
-    .logout-btn { background: #dc3545; color: white; }
-    .logout-btn:hover { background: #c82333; }
-
-    /* Main */
-    .main-container {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-      padding: 30px; max-width: 1400px; margin: 0 auto; flex: 1;
+    
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
     }
-
-    /* Carousel */
-    .carousel {
-      background: white; border-radius: 12px; padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08); border: 1px solid #e9ecef;
+    
+    .btn-modern:hover::before {
+      left: 100%;
     }
-    .carousel h2 {
-      color: #003d82; text-align: center; margin-bottom: 30px;
-      font-size: 1.8em; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+    
+    .btn-modern:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-    .carousel-item { display: none; text-align: center; }
-    .carousel-item.active { display: block; }
-    .carousel-item img {
-      width: 100%; max-width: 500px; height: 280px;
-      object-fit: cover; border-radius: 8px; border: 2px solid #e9ecef;
+    
+    .notification-toast {
+      animation: slideIn 0.5s ease, fadeIn 0.5s ease;
     }
-    .carousel-item h3 { color: #003d82; margin: 20px 0 10px; }
-    .carousel-item p { color: #6c757d; max-width: 480px; margin: 0 auto; }
-    .carousel-controls {
-      margin-top: 25px; display: flex; gap: 15px; justify-content: center;
+    
+    .event-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .carousel-controls button {
-      background: #003d82; color: white; border: none; border-radius: 6px;
-      padding: 10px 20px; cursor: pointer; font-weight: 500;
-      transition: background 0.2s;
+    
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, #ff6b35, #ffcc00);
     }
-    .carousel-controls button:hover { background: #002a5c; }
-    .carousel-indicators { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
-    .indicator {
-      width: 10px; height: 10px; border-radius: 50%; background: #dee2e6; cursor: pointer;
-      transition: background 0.2s;
+    
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border-color: #cbd5e0;
     }
-    .indicator.active { background: #ff6b35; }
-
-    /* News */
-    .news-scroll {
-      background: white; border-radius: 12px; padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08); border: 1px solid #e9ecef;
-      max-height: 600px; overflow-y: auto;
+    
+    .event-date {
+      background: linear-gradient(135deg, #003366, #004d99);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
     }
-    .news-scroll h2 {
-      color: #003d82; margin-bottom: 25px; font-size: 1.8em; font-weight: 600;
-      display: flex; align-items: center; gap: 10px;
-      border-bottom: 2px solid #e9ecef; padding-bottom: 15px;
+    
+    .carousel-overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
     }
-    .news-item {
-      background: #f8f9fa; margin-bottom: 20px; border-radius: 8px; padding: 20px;
-      border-left: 4px solid #ff6b35; position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+    
+    .user-badge {
+      background: linear-gradient(135deg, #ffcc00, #ff6b35);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .news-item:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .news-item h3 { margin: 0 0 10px; color: #003d82; padding-right: 80px; }
-    .news-item p { color: #495057; }
-    .news-date {
-      position: absolute; top: 15px; right: 15px;
-      background: #003d82; color: white; padding: 4px 8px; border-radius: 4px;
-      font-size: 0.8em; font-weight: 500;
+    
+    .footer-gradient {
+      background: linear-gradient(135deg, #003366 0%, #002244 100%);
     }
-    .news-scroll::-webkit-scrollbar { width: 6px; }
-    .news-scroll::-webkit-scrollbar-thumb { background: #003d82; border-radius: 3px; }
-
-    /* Footer */
-    footer {
-      background: #003366; color: white; padding: 20px 10px;
-      text-align: center; margin-top: auto;
+    
+    .social-icon {
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
     }
-    .footer-content { max-width: 900px; margin: 0 auto; }
-    .footer-content p { margin-bottom: 10px; font-size: 14px; }
-    .footer-links {
-      display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
+    
+    .social-icon:hover {
+      background: #ffcc00;
+      transform: translateY(-3px) rotate(5deg);
+      color: #003366;
     }
-    .footer-links a { color: #fff; text-decoration: none; font-size: 14px; transition: color 0.3s; }
-    .footer-links a:hover { color: #ffcc00; }
-
-    #LogoUtu { width: 10vh; border-radius: 200px; }
-    .user-menu { display: flex; align-items: center; gap: 15px; }
-    .loading-text { text-align: center; color: #666; margin: 20px 0; }
-
-    /* Responsive */
+    
+    /* Responsive improvements */
     @media (max-width: 768px) {
-      .main-container { grid-template-columns: 1fr; }
-      .nav-center { flex-direction: column; gap: 10px; }
-      .user-menu { flex-direction: column; }
-      nav { padding: 15px 20px; }
-      .main-container { padding: 20px; gap: 20px; }
+      .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .event-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+    
+    /* Loading animations */
+    .loading-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #003366, #004d99);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, #002244, #003366);
     }
   </style>
 </head>
-<body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-left">
-      <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
-      <span>UTU - Universidad Técnica del Uruguay</span>
-    </div>
-    
-    <div class="nav-center">
-      <div class="dropdown" id="contactDropdown">
-        <button class="dropdown-toggle" onclick="toggleDropdown()">
-          <i class="fas fa-phone-alt"></i> Contacto <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
-        </button>
-        <div class="dropdown-menu">
-          <div class="dropdown-item"><i class="fas fa-map-marker-alt"></i><div class="contact-info"><strong>Sede Central</strong><small>25 de agosto Nº 427 esq. Batlle y Ordoñez</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-phone"></i><div class="contact-info"><strong>Teléfono</strong><small>4364 8962 - 4364 2426</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-envelope"></i><div class="contact-info"><strong>Correo Institucional</strong><small>tecnicatrinidad@gmail.com</small></div></div>
-          <div class="dropdown-item"><i class="fas fa-clock"></i><div class="contact-info"><strong>Horario</strong><small>Lun a Vie: 7:00 - 23:30</small></div></div>
+<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+  <!-- NAV MEJORADO -->
+  <nav class="nav-glass text-white shadow-2xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+        
+        <!-- Logo y Marca Mejorado -->
+        <div class="flex items-center gap-4 group cursor-pointer">
+          <div class="relative">
+            <img id="LogoUtu" 
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" 
+                 alt="Logo UTU"
+                 class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white border-opacity-30 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <div class="absolute -inset-1 bg-utu-yellow rounded-2xl opacity-0 group-hover:opacity-20 blur-sm transition-all duration-500"></div>
+          </div>
+          <div class="flex flex-col text-center lg:text-left">
+            <span class="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-utu-yellow bg-clip-text text-transparent">
+              UTU - Trinidad Flores
+            </span>
+            <span class="text-xs text-utu-yellow opacity-90 font-medium mt-1">
+              Educación Técnica de Excelencia
+            </span>
+          </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="nav-right">
-      <div class="user-menu" id="userMenu">
-        <?php if ($isLoggedIn && !empty($userName)): ?>
-          <!-- Usuario Logueado - Muestra bienvenida y botón de cerrar sesión -->
-          <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($userName); ?>!</div>
-          <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Cerrar Sesión
+        
+        <!-- Dropdown Contacto Mejorado -->
+        <div class="relative dropdown" id="contactDropdown">
+          <button onclick="toggleDropdown()" 
+                  class="btn-modern from-utu-blue to-utu-blue-light text-white font-semibold px-5 py-3 flex items-center gap-3 group">
+            <i class="fas fa-phone-alt text-utu-yellow group-hover:scale-110 transition-transform duration-300"></i>
+            <span>Contacto</span>
+            <i class="fas fa-chevron-down text-utu-yellow text-xs transition-transform duration-300 group-hover:rotate-180"></i>
           </button>
-        <?php else: ?>
-          <!-- Usuario No Logueado - Muestra botón de acceder -->
-          <button class="login-btn" onclick="goToLogin()">
-            <i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i> Acceder
-          </button>
-        <?php endif; ?>
+          <div class="dropdown-menu absolute right-0 mt-3 bg-white rounded-2xl min-w-[320px] shadow-2xl overflow-hidden z-50 border border-gray-200">
+            <div class="p-1">
+              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
+                <i class="fas fa-map-marker-alt text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+                <div>
+                  <strong class="block text-utu-blue font-semibold mb-1">Sede Central</strong>
+                  <small class="text-gray-600 text-sm">25 de agosto Nº 427 esq. Batlle y Ordoñez</small>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
+                <i class="fas fa-phone text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+                <div>
+                  <strong class="block text-utu-blue font-semibold mb-1">Teléfono</strong>
+                  <small class="text-gray-600 text-sm">4364 8962 - 4364 2426</small>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
+                <i class="fas fa-envelope text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+                <div>
+                  <strong class="block text-utu-blue font-semibold mb-1">Correo</strong>
+                  <small class="text-gray-600 text-sm">tecnicatrinidad@gmail.com</small>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
+                <i class="fas fa-clock text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+                <div>
+                  <strong class="block text-utu-blue font-semibold mb-1">Horario</strong>
+                  <small class="text-gray-600 text-sm">Lun a Vie: 7:00 - 23:30</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Botones de Usuario Mejorados -->
+        <div class="flex items-center gap-3 user-buttons" id="userMenu">
+          <?php if ($isLoggedIn && !empty($userName)): ?>
+            <!-- Botones para ADMIN y DOCENTE -->
+            <?php if ($userRol === 'ADMIN' || $userRol === 'DOCENTE'): ?>
+              <div class="flex items-center gap-3 hero-buttons">
+                <!-- Botón de Chat -->
+                <button onclick="goToChat()" 
+                        class="btn-modern from-utu-green to-green-600 text-white font-semibold px-4 py-3 flex items-center gap-2 relative">
+                  <i class="fas fa-comments"></i>
+                  <span class="hidden sm:inline">Chat</span>
+                  <div id="chat-notification" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full hidden"></div>
+                </button>
+                
+                <!-- Botón de Gestionar Noticias (solo ADMIN) -->
+                <?php if ($userRol === 'ADMIN'): ?>
+                  <button onclick="goToGestion()" 
+                          class="btn-modern from-utu-purple to-purple-600 text-white font-semibold px-4 py-3 flex items-center gap-2">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="hidden sm:inline">Gestionar</span>
+                  </button>
+                <?php endif; ?>
+              </div>
+            <?php endif; ?>
+            
+            <!-- Información del usuario mejorada -->
+            <div class="flex items-center gap-3 bg-white bg-opacity-10 rounded-xl px-4 py-3 border border-white border-opacity-20 backdrop-blur-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-utu-yellow to-utu-orange flex items-center justify-center text-white font-bold text-sm">
+                  <?php echo strtoupper(substr($userName, 0, 1)); ?>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-white font-semibold text-sm">¡Hola, <?php echo htmlspecialchars(explode(' ', $userName)[0]); ?>!</span>
+                  <span class="user-badge text-xs"><?php echo $userRol; ?></span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Botón de Cerrar Sesión Mejorado -->
+            <button onclick="logout()" 
+                    class="btn-modern from-red-500 to-red-600 text-white font-semibold px-4 py-3 flex items-center gap-2 hover:from-red-600 hover:to-red-700">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="hidden sm:inline">Salir</span>
+            </button>
+          <?php else: ?>
+            <button onclick="goToLogin()" 
+                    class="btn-modern from-utu-orange to-utu-yellow text-white font-semibold px-6 py-3 flex items-center gap-2">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Acceder</span>
+            </button>
+          <?php endif; ?>
+        </div>
       </div>
     </div>
   </nav>
 
-  <div class="main-container">
-    <!-- Carrusel -->
-    <div class="carousel" id="carousel">
-      <h2><i class="fas fa-info-circle"></i> Información Institucional</h2>
-      <div class="carousel-controls">
-        <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Anterior</button>
-        <button onclick="nextSlide()">Siguiente <i class="fas fa-chevron-right"></i></button>
+  <!-- MAIN CONTAINER -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-6 sm:pb-8 flex-1 w-full">
+    
+    <!-- Banner Carousel Mejorado -->
+    <div class="relative w-full mb-8 sm:mb-12 overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl" id="carousel">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-80 px-8 py-6 rounded-2xl loading-text flex items-center gap-3">
+        <div class="w-6 h-6 border-2 border-utu-yellow border-t-transparent rounded-full animate-spin"></div>
+        <span class="text-lg font-medium">Cargando información...</span>
       </div>
-      <div class="carousel-indicators" id="indicators"></div>
+      
+      <!-- Controles Mejorados -->
+      <div class="carousel-controls absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4 sm:px-6 z-20">
+        <button onclick="prevSlide()" 
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 hover:scale-110 hover:shadow-2xl transition-all duration-300 flex items-center justify-center backdrop-blur-md border border-white border-opacity-30">
+          <i class="fas fa-chevron-left text-lg"></i>
+        </button>
+        <button onclick="nextSlide()" 
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 hover:scale-110 hover:shadow-2xl transition-all duration-300 flex items-center justify-center backdrop-blur-md border border-white border-opacity-30">
+          <i class="fas fa-chevron-right text-lg"></i>
+        </button>
+      </div>
+      
+      <!-- Indicadores Mejorados -->
+      <div id="indicators" class="carousel-indicators absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
     </div>
 
-    <!-- Noticias -->
-    <div class="news-scroll" id="news-container">
-      <h2><i class="fas fa-newspaper"></i> Noticias UTU</h2>
-      <div class="loading-text">Cargando noticias...</div>
+    <!-- Eventos/Noticias Mejorados -->
+    <div class="news-section ">
+      <div class="flex items-center justify-between mb-6 sm:mb-8">
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-utu-blue flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-r from-utu-orange to-utu-yellow flex items-center justify-center">
+            <i class="fas fa-calendar-alt text-white text-xl"></i>
+          </div>
+          Eventos y Noticias
+        </h2>
+        <div class="text-sm text-gray-500 bg-gray-100 px-3 py-2 rounded-lg">
+          <i class="fas fa-info-circle text-utu-blue mr-2"></i>
+          Actualizado recientemente
+        </div>
+      </div>
+      <div id="eventos-container">
+        <div class="loading-text text-center text-gray-600 py-12 flex flex-col items-center gap-4">
+          <div class="w-12 h-12 border-4 border-utu-blue border-t-transparent rounded-full animate-spin"></div>
+          <span class="text-lg font-medium">Cargando eventos...</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 UTU - Universidad Técnica del Uruguay. Todos los derechos reservados.</p>
-      <div class="footer-links">
-        <a href="#">Política de Privacidad</a>
-        <a href="#">Términos de Servicio</a>
-        <a href="login">Acceso</a>
+  <!-- FOOTER MEJORADO -->
+  <footer class="footer-gradient text-gray-300 pt-16 mt-16 shadow-2xl">
+    <div class="footer-container max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        
+        <!-- Logo y Social Mejorado -->
+        <div class="footer-section">
+          <div class="footer-logo mb-6">
+            <h3 class="text-3xl font-bold bg-gradient-to-r from-utu-yellow to-utu-orange bg-clip-text text-transparent mb-2">UTU TRINIDAD</h3>
+            <p class="text-utu-yellow text-sm font-medium mb-4">Escuela Técnica Trinidad Flores</p>
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed mb-6">
+            Formando profesionales técnicos con excelencia académica desde 1942.
+            Educación de calidad para el desarrollo del país.
+          </p>
+          <div class="footer-social flex gap-3">
+            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Enlaces Rápidos Mejorado -->
+        <div class="footer-section">
+          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Enlaces Rápidos</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Inicio
+            </a></li>
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Sobre Nosotros
+            </a></li>
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Carreras y Cursos
+            </a></li>
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Inscripciones
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Servicios Mejorado -->
+        <div class="footer-section">
+          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Servicios</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Biblioteca Virtual
+            </a></li>
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Plataforma Educativa
+            </a></li>
+            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Bedelía Online
+            </a></li>
+            <li><a href="login" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-chevron-right text-xs"></i> Portal Estudiantes
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Contacto Mejorado -->
+        <div class="footer-section">
+          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Contacto</h4>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3 text-sm text-gray-400">
+              <i class="fas fa-map-marker-alt text-utu-yellow mt-1"></i>
+              <span>25 de agosto Nº 427<br>Trinidad, Flores</span>
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-400">
+              <i class="fas fa-phone text-utu-yellow mt-1"></i>
+              <span>4364 8962 - 4364 2426</span>
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-400">
+              <i class="fas fa-envelope text-utu-yellow mt-1"></i>
+              <span>tecnicatrinidad@gmail.com</span>
+            </li>
+            <li class="flex items-start gap-3 text-sm text-gray-400">
+              <i class="fas fa-clock text-utu-yellow mt-1"></i>
+              <span>Lun - Vie: 7:00 - 23:30</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Mejorado -->
+    <div class="bg-black bg-opacity-30 py-6 border-t border-utu-yellow border-opacity-20">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-gray-400 text-sm text-center md:text-left">
+          &copy; 2025 Escuela Técnica Trinidad Flores (UTU). Todos los derechos reservados.
+        </p>
+        <div class="flex items-center gap-4 text-sm">
+          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Privacidad</a>
+          <span class="text-utu-yellow text-opacity-40">•</span>
+          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Términos</a>
+          <span class="text-utu-yellow text-opacity-40">•</span>
+          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Mapa del Sitio</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -281,57 +527,167 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       cont.innerHTML = '';
       for(let i = 0; i < n; i++){ 
         const d = document.createElement('div'); 
-        d.className = 'indicator' + (i === 0 ? ' active' : ''); 
+        d.className = 'indicator w-3 h-3 rounded-full cursor-pointer transition-all duration-300 border-2 ' + 
+          (i === 0 ? 'active bg-utu-yellow border-utu-yellow scale-125 shadow-lg' : 'bg-white bg-opacity-50 border-white border-opacity-50');
         d.onclick = () => goToSlide(i); 
         cont.appendChild(d); 
       }
     }
-    function cargarInformacionGeneral(arr){
+    
+    // Navegación
+    function goToChat() {
+      window.location.href = 'chat';
+    }
+
+    function goToGestion() {
+      window.location.href = 'gestion-noticias';
+    }
+
+    function goToLogin() {
+      window.location.href = 'login';
+    }
+
+    // Función para mostrar notificaciones mejorada
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-gradient-to-r from-utu-green to-green-600' : 'bg-gradient-to-r from-red-500 to-red-600';
+      
+      notification.className = `notification-toast fixed top-6 right-6 px-6 py-4 rounded-2xl text-white font-semibold z-[10000] shadow-2xl ${bgColor} flex items-center gap-3`;
+      notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} text-xl"></i>
+        <span>${message}</span>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100px)';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // Cargar posts en el carrusel
+    function cargarInformacionGeneral(posts){
       const c = document.getElementById('carousel'); 
       const ctr = c.querySelector('.carousel-controls');
+      const ind = c.querySelector('.carousel-indicators');
+      const loading = c.querySelector('.loading-text');
+      
+      if (loading) loading.remove();
+      
       c.querySelectorAll('.carousel-item').forEach(el => el.remove());
       
-      arr.forEach((it, idx) => {
+      const postsConImagen = posts.filter(post => post.imagen);
+      
+      if (postsConImagen.length === 0) {
+        const noData = document.createElement('div');
+        noData.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-80 px-8 py-6 rounded-2xl text-lg font-medium flex items-center gap-3';
+        noData.innerHTML = `
+          <i class="fas fa-info-circle text-utu-yellow text-xl"></i>
+          <span>No hay información disponible</span>
+        `;
+        c.appendChild(noData);
+        return;
+      }
+      
+      postsConImagen.forEach((post, idx) => {
         const s = document.createElement('div');
-        s.className = 'carousel-item' + (idx === 0 ? ' active' : '');
+        s.className = 'carousel-item relative w-full h-[400px] sm:h-[500px] lg:h-[600px]' + (idx === 0 ? ' active' : ' hidden');
+        
+        const imageUrl = `data:image/jpeg;base64,${post.imagen}`;
+        const fecha = new Date(post.fecha_publicacion).toLocaleDateString('es-UY', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
         s.innerHTML = `
-          <img src="${it.imagen}" alt="${it.titulo}">
-          <h3>${it.titulo}</h3>
-          <p>${it.descripcion}</p>
+          <img src="${imageUrl}" alt="${post.titulo}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+          <div class="carousel-overlay absolute bottom-0 left-0 right-0 text-white px-6 sm:px-10 lg:px-16 pt-16 pb-8 sm:pb-12">
+            <h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 leading-tight drop-shadow-2xl">${post.titulo}</h3>
+            <p class="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed max-w-4xl mb-6 drop-shadow line-clamp-2">${post.contenido}</p>
+            <div class="flex items-center gap-6 text-sm sm:text-base text-utu-yellow font-semibold">
+              <span class="flex items-center gap-2">
+                <i class="fas fa-user"></i> ${post.autor.nombre}
+              </span>
+              <span class="flex items-center gap-2">
+                <i class="fas fa-calendar"></i> ${fecha}
+              </span>
+            </div>
+          </div>
         `; 
-        c.insertBefore(s, ctr);
+        c.appendChild(s);
       });
+      
+      c.appendChild(ctr);
+      c.appendChild(ind);
       
       carouselSlides = c.querySelectorAll('.carousel-item'); 
       createIndicators(carouselSlides.length); 
       showSlide(0);
     }
     
-    function cargarNoticias(arr){
-      const cont = document.getElementById('news-container'); 
-      const t = cont.querySelector('h2'); 
-      cont.innerHTML = ''; 
-      cont.appendChild(t);
+    // Cargar eventos/noticias MEJORADO
+    function cargarEventos(eventos){
+      const cont = document.getElementById('eventos-container'); 
+      const loading = cont.querySelector('.loading-text');
       
-      if(!arr.length){
+      if (loading) loading.remove();
+      cont.innerHTML = ''; 
+      
+      if(!eventos.length){
         const m = document.createElement('div');
-        m.className = 'loading-text';
-        m.textContent = 'No hay noticias disponibles';
+        m.className = 'text-center text-gray-600 py-12 flex flex-col items-center gap-4';
+        m.innerHTML = `
+          <i class="fas fa-calendar-times text-4xl text-utu-blue opacity-50"></i>
+          <span class="text-lg font-medium">No hay eventos disponibles</span>
+          <p class="text-gray-500 text-sm">Vuelve pronto para ver las próximas actividades</p>
+        `;
         cont.appendChild(m);
         return;
       }
+
+      // Crear grid de eventos mejorado
+      const grid = document.createElement('div');
+      grid.className = 'event-grid grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6';
       
-      arr.forEach(n => {
+      eventos.forEach(evento => {
         const it = document.createElement('div');
-        it.className = 'news-item';
-        const f = n.fecha || new Date().toLocaleDateString('es-UY');
+        it.className = 'event-card group cursor-pointer';
+        
+        const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-UY', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        
+        const hora = new Date(evento.fecha_evento).toLocaleTimeString('es-UY', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
         it.innerHTML = `
-          <div class="news-date">${f}</div>
-          <h3>${n.titulo}</h3>
-          <p>${n.descripcion}</p>
+          <div class="flex justify-between items-start mb-4">
+            <div class="event-date">${fecha}</div>
+            <div class="text-utu-orange font-semibold text-sm bg-orange-50 px-3 py-1 rounded-lg">${hora}</div>
+          </div>
+          <h3 class="text-xl font-bold text-utu-blue mb-3 group-hover:text-utu-orange transition-colors duration-300">${evento.titulo}</h3>
+          <p class="text-gray-600 leading-relaxed mb-4 line-clamp-3">${evento.descripcion}</p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <i class="fas fa-user text-utu-blue"></i>
+              <span>${evento.autor.nombre}</span>
+            </div>
+            <div class="text-utu-blue group-hover:text-utu-orange transition-colors duration-300">
+              <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+            </div>
+          </div>
         `;
-        cont.appendChild(it);
+        grid.appendChild(it);
       });
+      
+      cont.appendChild(grid);
     }
 
     // Funciones de autenticación
@@ -345,10 +701,9 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
         const data = await res.json();
         if (data.success) {
           showNotification('Sesión cerrada correctamente', 'success');
-          // Recargar la página para actualizar el estado PHP
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 1500);
         }
       } catch (error) {
         console.log("Error al cerrar sesión:", error);
@@ -356,79 +711,62 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : '';
       }
     }
 
-    function goToLogin() {
-      window.location.href = 'login';
-    }
+    // Cargar datos desde ambos endpoints
+    async function cargarDatos() {
+      try {
+        // Cargar posts para el carrusel
+        const postsResponse = await fetch('/api/v1/home/getPost');
+        if (!postsResponse.ok) throw new Error(`Error HTTP posts: ${postsResponse.status}`);
+        const postsData = await postsResponse.json();
+        
+        if (postsData.status === 'success') {
+          cargarInformacionGeneral(postsData.data);
+          startCarouselAutoAdvance();
+        }
 
-    function showNotification(message, type) {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; padding: 15px 20px;
-        border-radius: 8px; color: white; font-weight: 500; z-index: 10000;
-        background: ${type === 'success' ? '#28a745' : '#dc3545'};
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
+        // Cargar eventos para las noticias
+        const eventosResponse = await fetch('/api/v1/home/getEvento');
+        if (!eventosResponse.ok) throw new Error(`Error HTTP eventos: ${eventosResponse.status}`);
+        const eventosData = await eventosResponse.json();
+        
+        if (eventosData.status === 'success') {
+          cargarEventos(eventosData.data);
+        }
+
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        
+        const carousel = document.getElementById('carousel');
+        const eventos = document.getElementById('eventos-container');
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'text-center text-red-600 py-12 flex flex-col items-center gap-3';
+        errorDiv.innerHTML = `
+          <i class="fas fa-exclamation-triangle text-3xl"></i>
+          <span class="text-lg font-medium">Error al cargar la información</span>
+          <button onclick="cargarDatos()" class="btn-modern from-utu-blue to-utu-blue-light text-white px-6 py-3 mt-4">
+            <i class="fas fa-redo mr-2"></i> Reintentar
+          </button>
+        `;
+        
+        carousel.querySelector('.loading-text')?.remove();
+        eventos.querySelector('.loading-text')?.remove();
+        
+        carousel.appendChild(errorDiv.cloneNode(true));
+        eventos.appendChild(errorDiv.cloneNode(true));
+      }
     }
 
     // Auto-avance del carrusel
     function startCarouselAutoAdvance() {
       setInterval(() => {
         nextSlide();
-      }, 5000);
+      }, 6000);
     }
 
-    // Datos y inicialización
+    // Inicialización
     window.onload = () => {
-      const noticiasUTU = [
-        {
-          titulo: "Nuevas Carreras Técnicas 2025",
-          descripcion: "UTU incorpora carreras en Energías Renovables, Robótica Industrial y Desarrollo de Aplicaciones Móviles. Inscripciones abiertas.",
-          fecha: "15 Sep 2025"
-        },
-        {
-          titulo: "Convenio con Industria Nacional", 
-          descripcion: "Acuerdo estratégico con empresas uruguayas para prácticas laborales y formación dual. Oportunidades para estudiantes.",
-          fecha: "14 Sep 2025"
-        },
-        {
-          titulo: "Modernización de Laboratorios",
-          descripcion: "Nuevos laboratorios en Electrónica y TI equipados con tecnología de última generación para formación práctica.",
-          fecha: "13 Sep 2025"
-        },
-        {
-          titulo: "Programa de Becas 2025",
-          descripcion: "Convocatoria abierta para becas de estudio. Postulaciones hasta el 30 de octubre.",
-          fecha: "12 Sep 2025"
-        }
-      ];
-      
-      const infoInstitucional = [
-        {
-          titulo: "Inscripciones 2025",
-          descripcion: "Inscripciones abiertas hasta el 30 de septiembre para todas las carreras técnicas y tecnológicas.",
-          imagen: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&h=280&fit=crop"
-        },
-        {
-          titulo: "Campus Virtual",
-          descripcion: "Acceso a materiales, evaluaciones y clases en línea a través de nuestra plataforma educativa.",
-          imagen: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=500&h=280&fit=crop"
-        },
-        {
-          titulo: "Biblioteca Digital",
-          descripcion: "Más de 10,000 recursos educativos disponibles las 24 horas para toda la comunidad UTU.",
-          imagen: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500&h=280&fit=crop"
-        }
-      ];
-
-      cargarNoticias(noticiasUTU);
-      cargarInformacionGeneral(infoInstitucional);
-      startCarouselAutoAdvance();
+      cargarDatos();
     };
   </script>
 </body>

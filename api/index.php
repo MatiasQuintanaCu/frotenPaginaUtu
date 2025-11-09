@@ -59,6 +59,44 @@ switch ($apiVersion) {
                         break;
                 }
                 break; 
+            case 'home':
+                // Lógica para el recurso 'home'
+                switch ($action) {
+                    case 'getPost':
+                        require_once __DIR__ . '/v1/home/getPost.php';
+                        break;
+                    case 'getEvento':
+                        require_once __DIR__ . '/v1/home/getEvento.php';
+                        break;
+                    default:
+                        http_response_code(404);
+                        echo json_encode(["error" => "Acción no encontrada para el recurso 'home'."]);
+                        break;
+                }
+
+
+
+              break;
+  case 'mensajeria':
+    switch ($action) {
+        case 'getUsers':
+            require_once __DIR__ . '/v1/mensajeria/getUsers.php';
+            break;
+        case 'getConversations':
+            require_once __DIR__ . '/v1/mensajeria/getConversations.php';
+            break;
+        case 'sendMessage':
+            require_once __DIR__ . '/v1/mensajeria/sendMessage.php';
+            break;
+        case 'getMessages':
+            require_once __DIR__ . '/v1/mensajeria/getMessage.php';
+            break;
+        default:
+            http_response_code(404);
+            echo json_encode(["error" => "Acción no encontrada para el recurso 'mensajeria'."]);
+            break;
+    }
+    break;
             case 'user':
                 // Lógica para el recurso 'user' - ACTUALIZADO CON NUEVAS RUTAS
                 switch ($action) {

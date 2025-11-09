@@ -13,8 +13,8 @@
     }
 
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f8f9fa;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Arial', sans-serif;
+      background: linear-gradient(135deg, #e8f0f8 0%, #f8f9fa 100%);
       color: #333;
       line-height: 1.6;
       display: flex;
@@ -22,307 +22,611 @@
       min-height: 100vh;
     }
 
-    /* NAV */
     nav {
-      background-color: #003366;
+      background: #003366;
       color: white;
-      padding: 15px 30px;
+      padding: 20px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 10px rgba(0, 61, 130, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
     }
 
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 15px;
+      position: relative;
+      z-index: 1;
     }
 
     .nav-left span {
-      font-size: 1.3em;
-      font-weight: 600;
+      font-size: 1.4em;
+      font-weight: 700;
       letter-spacing: 0.5px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Dropdown */
-    .dropdown { position: relative; }
-    .dropdown-toggle {
-      background: none;
-      border: none;
-      color: white;
+    #LogoUtu { 
+      width: 65px; 
+      height: 65px;
+      border-radius: 50%; 
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    #LogoUtu:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .main-container {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .forms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      width: 100%;
+    }
+
+    .form-section {
+      background: white;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #003366, #0066cc, #003366);
+      background-size: 200% 100%;
+      animation: gradientMove 3s linear infinite;
+    }
+
+    .form-section:nth-child(2)::before {
+      background: linear-gradient(90deg, #ff6b35, #ff8c5a, #ff6b35);
+      background-size: 200% 100%;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .form-section:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-section h2 {
+      color: #003d82;
+      font-size: 2em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-section h2 i {
       font-size: 1.1em;
-      font-weight: 500;
-      cursor: pointer;
-      padding: 10px 15px;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeIn 0.5s ease-out backwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #495057;
+      font-size: 1em;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .dropdown-toggle:hover { background-color: rgba(255,255,255,0.1); }
-    .dropdown-menu {
-      position: absolute;
-      top: 100%; right: 0;
+
+    .form-group label::before {
+      content: '•';
+      color: #003366;
+      font-size: 1.5em;
+      line-height: 0;
+    }
+
+    .form-input {
+      padding: 18px 20px;
+      border: 2px solid #e0e3e8;
+      border-radius: 12px;
+      font-size: 1.05em;
+      font-family: 'Segoe UI', sans-serif;
+      transition: all 0.3s ease;
+      background: #fafbfc;
+    }
+
+    .form-input:hover {
+      border-color: #b0b8c0;
       background: white;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      min-width: 300px;
-      opacity: 0; visibility: hidden;
-      transform: translateY(-5px);
-      transition: all 0.2s ease;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-      z-index: 1000;
-      margin-top: 5px;
     }
-    .dropdown.active .dropdown-menu {
-      opacity: 1; visibility: visible;
-      transform: translateY(0);
-    }
-    .dropdown-item {
-      padding: 15px 20px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      border-bottom: 1px solid #e9ecef;
-      transition: background-color 0.2s ease;
-    }
-    .dropdown-item:last-child { border-bottom: none; }
-    .dropdown-item:hover { background-color: #f8f9fa; }
-    .dropdown-item i { width: 20px; color: #003366; }
 
-    .contact-info strong { color: #003366; display: block; font-weight: 600; margin-bottom: 2px; }
-    .contact-info small { color: #6c757d; font-size: 0.9em; }
-
-    /* Login */
-    .login-btn {
-      background-color: #ffcc00;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 12px 20px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      text-transform: uppercase;
-      font-size: 0.9em;
-      letter-spacing: 0.5px;
+    .form-input:focus {
+      outline: none;
+      border-color: #003366;
+      box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1), 0 4px 12px rgba(0, 51, 102, 0.15);
+      background: white;
+      transform: translateY(-2px);
     }
-    .login-btn:hover { background-color: #e55a2b; }
 
-    /* Main */
-    .main-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      padding: 30px;
-      max-width: 1400px;
-      margin: 0 auto;
+    textarea.form-input {
+      min-height: 160px;
+      resize: vertical;
       flex: 1;
     }
 
-    /* Carousel */
-    .carousel {
-      background: white;
+    .file-input-wrapper {
+      position: relative;
+      padding: 35px;
+      border: 3px dashed #d0d5dd;
       border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-      border: 1px solid #e9ecef;
-    }
-    .carousel h2 {
-      color: #003d82;
       text-align: center;
-      margin-bottom: 30px;
-      font-size: 1.8em;
-      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      min-height: 110px;
     }
-    .carousel-item { display: none; text-align: center; }
-    .carousel-item.active { display: block; }
-    .carousel-item img {
-      width: 100%; max-width: 500px; height: 280px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid #e9ecef;
+
+    .file-input-wrapper:hover {
+      border-color: #003366;
+      background: linear-gradient(135deg, #e8f0f8 0%, #d8e5f5 100%);
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(0, 51, 102, 0.1);
     }
-    .carousel-item h3 { color: #003d82; margin: 20px 0 10px; }
-    .carousel-item p { color: #6c757d; max-width: 480px; margin: 0 auto; }
-    .carousel-controls {
-      margin-top: 25px;
-      display: flex; gap: 15px;
-      justify-content: center;
-    }
-    .carousel-controls button {
-      background-color: #003d82;
-      color: white; border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
+
+    .file-input-wrapper input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
       cursor: pointer;
+    }
+
+    .file-input-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .file-input-label i {
+      font-size: 2.5em;
+      color: #003366;
+      transition: all 0.3s ease;
+    }
+
+    .file-input-wrapper:hover .file-input-label i {
+      transform: translateY(-5px) scale(1.1);
+      color: #0066cc;
+    }
+
+    .file-input-label span {
+      color: #6c757d;
+      font-size: 0.95em;
       font-weight: 500;
     }
-    .carousel-controls button:hover { background-color: #002a5c; }
-    .carousel-indicators { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
-    .indicator {
-      width: 10px; height: 10px; border-radius: 50%;
-      background-color: #dee2e6; cursor: pointer;
-    }
-    .indicator.active { background-color: #ff6b35; }
 
-    /* News */
-    .news-scroll {
-      background: white;
+    .submit-btn {
+      padding: 18px 40px;
+      border: none;
       border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-      border: 1px solid #e9ecef;
-      max-height: 600px;
-      overflow-y: auto;
-    }
-    .news-scroll h2 {
-      color: #003d82;
-      margin-bottom: 25px;
-      font-size: 1.8em;
-      font-weight: 600;
-      display: flex; align-items: center; gap: 10px;
-      border-bottom: 2px solid #e9ecef;
-      padding-bottom: 15px;
-    }
-    .news-item {
-      background: #f8f9fa;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      padding: 20px;
-      border-left: 4px solid #ff6b35;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 1.15em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       position: relative;
+      overflow: hidden;
     }
-    .news-item:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .news-item h3 { margin: 0 0 10px; color: #003d82; padding-right: 80px; }
-    .news-item p { color: #495057; }
-    .news-date {
-      position: absolute; top: 15px; right: 15px;
-      background-color: #003d82; color: white;
-      padding: 4px 8px; border-radius: 4px;
-      font-size: 0.8em; font-weight: 500;
-    }
-    .news-scroll::-webkit-scrollbar { width: 6px; }
-    .news-scroll::-webkit-scrollbar-thumb { background: #003d82; border-radius: 3px; }
 
-    /* Footer */
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .submit-btn:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .submit-btn i,
+    .submit-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .submit-btn-evento {
+      background: linear-gradient(135deg, #003366 0%, #004080 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(0, 51, 102, 0.3);
+    }
+
+    .submit-btn-evento:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 51, 102, 0.4);
+    }
+
+    .submit-btn-evento:active {
+      transform: translateY(-1px);
+    }
+
+    .submit-btn-noticia {
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .submit-btn-noticia:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+    }
+
+    .submit-btn-noticia:active {
+      transform: translateY(-1px);
+    }
+
     footer {
       background: #003366;
       color: white;
-      padding: 20px 10px;
+      padding: 25px 20px;
       text-align: center;
-      margin-top: auto;
+      box-shadow: 0 -4px 20px rgba(0, 51, 102, 0.2);
+      margin-top: 40px;
     }
+
     .footer-content {
       max-width: 900px;
       margin: 0 auto;
     }
-    .footer-content p { margin-bottom: 10px; font-size: 14px; }
+
+    .footer-content p { 
+      margin-bottom: 12px; 
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 20px;
       flex-wrap: wrap;
     }
+
     .footer-links a {
       color: #fff;
       text-decoration: none;
       font-size: 14px;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
+      padding: 6px 12px;
+      border-radius: 6px;
     }
-    .footer-links a:hover { color: #ffcc00; }
 
-    #LogoUtu { width: 10vh; border-radius: 200px; }
+    .footer-links a:hover { 
+      color: #ffcc00;
+      background: rgba(255, 204, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    input[type="date"].form-input {
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .forms-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .main-container {
+        padding: 30px 15px;
+      }
+    }
 
     @media (max-width: 768px) {
-      .main-container { grid-template-columns: 1fr; }
+      nav {
+        padding: 15px 20px;
+      }
+
+      .nav-left span {
+        font-size: 1.1em;
+      }
+
+      #LogoUtu {
+        width: 55px;
+        height: 55px;
+      }
+
+      .form-section {
+        padding: 35px 25px;
+      }
+      
+      .form-section h2 {
+        font-size: 1.6em;
+      }
+
+      .submit-btn {
+        padding: 16px 35px;
+        font-size: 1em;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
     <div class="nav-left">
       <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
       <span>UTU - Universidad Técnica del Uruguay</span>
     </div>
-    
   </nav>
 
-  
+  <div class="main-container">
+    <div class="forms-grid">
+      
+      <!-- Formulario Crear Evento -->
+      <div class="form-section">
+        <h2><i class="fas fa-calendar-plus"></i> Crear Evento</h2>
+        
+        <form id="formEvento" onsubmit="submitEvento(event)">
+          <div class="form-group">
+            <label for="titulo-evento">Título del Evento</label>
+            <input 
+              type="text" 
+              id="titulo-evento" 
+              name="nombre" 
+              class="form-input" 
+              placeholder="Ingrese el título del evento"
+              required
+            >
+          </div>
 
-   
+          <div class="form-group">
+            <label for="descripcion-evento">Descripción</label>
+            <textarea 
+              id="descripcion-evento" 
+              name="descripcion" 
+              class="form-input" 
+              placeholder="Ingrese la descripción del evento"
+              required
+            ></textarea>
+          </div>
 
-  <!-- FOOTER -->
+          <div class="form-group">
+            <label for="fecha-evento">Fecha del Evento</label>
+            <input 
+              type="date" 
+              id="fecha-evento" 
+              name="fecha_evento" 
+              class="form-input" 
+              required
+            >
+          </div>
+
+          <button type="submit" class="submit-btn submit-btn-evento">
+            <i class="fas fa-paper-plane"></i>
+            <span>Publicar Evento</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Formulario Crear Noticia -->
+      <div class="form-section">
+        <h2><i class="fas fa-newspaper"></i> Crear Noticia</h2>
+        
+        <form id="formNoticia" onsubmit="submitNoticia(event)">
+          <div class="form-group">
+            <label for="titulo-noticia">Título de la Noticia</label>
+            <input 
+              type="text" 
+              id="titulo-noticia" 
+              name="titulo" 
+              class="form-input" 
+              placeholder="Ingrese el título de la noticia"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="contenido-noticia">Descripción</label>
+            <textarea 
+              id="contenido-noticia" 
+              name="contenido" 
+              class="form-input" 
+              placeholder="Ingrese el contenido de la noticia"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Publicar Imagen</label>
+            <div class="file-input-wrapper">
+              <input 
+                type="file" 
+                id="imagen-noticia" 
+                name="imagen" 
+                accept="image/*"
+                onchange="handleFileSelect(event, 'noticia')"
+              >
+              <div class="file-input-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span id="file-name-noticia">Seleccionar imagen (opcional)</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn submit-btn-noticia">
+            <i class="fas fa-paper-plane"></i>
+            <span>Publicar Noticia</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
   <footer>
     <div class="footer-content">
       <p>&copy; 2025 UTU - Universidad Técnica del Uruguay. Todos los derechos reservados.</p>
       <div class="footer-links">
         <a href="#">Política de Privacidad</a>
         <a href="#">Términos de Servicio</a>
-        <a href="Login.html">Acceso</a>
+        <a href="#">Acceso</a>
       </div>
     </div>
   </footer>
 
   <script>
-    // Dropdown
-    function toggleDropdown() {
-      document.getElementById('contactDropdown').classList.toggle('active');
-    }
-    document.addEventListener('click', e => {
-      if (!document.getElementById('contactDropdown').contains(e.target)) {
-        document.getElementById('contactDropdown').classList.remove('active');
+    function handleFileSelect(event, tipo) {
+      const file = event.target.files[0];
+      const spanId = 'file-name-noticia';
+      const span = document.getElementById(spanId);
+      
+      if (file) {
+        span.textContent = file.name;
+        span.style.color = '#003366';
+        span.style.fontWeight = '600';
+      } else {
+        span.textContent = 'Seleccionar imagen (opcional)';
+        span.style.color = '#6c757d';
+        span.style.fontWeight = '500';
       }
-    });
-
-    // Carousel
-    let currentSlide = 0, carouselSlides = [];
-    function showSlide(i) {
-      carouselSlides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-      document.querySelectorAll('.indicator').forEach((ind, idx) => ind.classList.toggle('active', idx === i));
-    }
-    function nextSlide() { if (carouselSlides.length) { currentSlide = (currentSlide+1)%carouselSlides.length; showSlide(currentSlide);} }
-    function prevSlide() { if (carouselSlides.length) { currentSlide = (currentSlide-1+carouselSlides.length)%carouselSlides.length; showSlide(currentSlide);} }
-    function goToSlide(i){ currentSlide=i; showSlide(currentSlide); }
-    function createIndicators(n){
-      const cont=document.getElementById('indicators'); cont.innerHTML='';
-      for(let i=0;i<n;i++){ const d=document.createElement('div'); d.className='indicator'+(i===0?' active':''); d.onclick=()=>goToSlide(i); cont.appendChild(d); }
-    }
-    function cargarInformacionGeneral(arr){
-      const c=document.getElementById('carousel'); const ctr=c.querySelector('.carousel-controls');
-      c.querySelectorAll('.carousel-item').forEach(el=>el.remove());
-      arr.forEach((it,idx)=>{const s=document.createElement('div');s.className='carousel-item'+(idx===0?' active':'');s.innerHTML=`<img src="${it.imagen}" alt="${it.titulo}"><h3>${it.titulo}</h3><p>${it.descripcion}</p>`; c.insertBefore(s,ctr);});
-      carouselSlides=c.querySelectorAll('.carousel-item'); createIndicators(carouselSlides.length); showSlide(0);
-    }
-    function cargarNoticias(arr){
-      const cont=document.getElementById('news-container'); const t=cont.querySelector('h2'); cont.innerHTML=''; cont.appendChild(t);
-      if(!arr.length){const m=document.createElement('div');m.className='loading-text';m.textContent='No hay noticias disponibles';cont.appendChild(m);return;}
-      arr.forEach(n=>{const it=document.createElement('div');it.className='news-item';const f=n.fecha||new Date().toLocaleDateString('es-UY');it.innerHTML=`<div class="news-date">${f}</div><h3>${n.titulo}</h3><p>${n.descripcion}</p>`;cont.appendChild(it);});
     }
 
-    // Datos
-    window.onload=()=>{
-      const noticiasUTU=[
-        {titulo:"Nuevas Carreras Técnicas 2025",descripcion:"UTU incorpora carreras en Energías Renovables, Robótica Industrial y Desarrollo de Aplicaciones Móviles.",fecha:"15 Sep 2025"},
-        {titulo:"Convenio con Industria Nacional",descripcion:"Acuerdo estratégico con empresas uruguayas para prácticas laborales.",fecha:"14 Sep 2025"},
-        {titulo:"Modernización de Laboratorios",descripcion:"Nuevos laboratorios en Electrónica y TI.",fecha:"13 Sep 2025"}
-      ];
-      const infoInstitucional=[
-        {titulo:"Inscripciones 2025",descripcion:"Inscripciones abiertas hasta el 30 de septiembre.",imagen:"https://via.placeholder.com/500x280/003d82/ffffff?text=INSCRIPCIONES+2025"},
-        {titulo:"Campus Virtual",descripcion:"Acceso a materiales y evaluaciones en línea.",imagen:"https://via.placeholder.com/500x280/ff6b35/ffffff?text=CAMPUS+VIRTUAL"}
-      ];
-      setTimeout(()=>{cargarNoticias(noticiasUTU);cargarInformacionGeneral(infoInstitucional);},500);
-    };
+    function submitEvento(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      
+      console.log('Datos del Evento:');
+      console.log('Nombre:', formData.get('nombre'));
+      console.log('Descripción:', formData.get('descripcion'));
+      console.log('Fecha:', formData.get('fecha_evento'));
+      
+      alert('✅ Evento creado exitosamente!\n(Conectar con backend PHP)');
+      event.target.reset();
+    }
+
+    function submitNoticia(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      
+      console.log('Datos de la Noticia:');
+      console.log('Título:', formData.get('titulo'));
+      console.log('Contenido:', formData.get('contenido'));
+      
+      alert('✅ Noticia creada exitosamente!\n(Conectar con backend PHP)');
+      event.target.reset();
+    }
   </script>
 </body>
 </html>

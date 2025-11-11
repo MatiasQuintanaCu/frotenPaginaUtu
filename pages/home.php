@@ -214,13 +214,14 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         
         <!-- Logo y Marca Mejorado -->
         <div class="flex items-center gap-4 group cursor-pointer">
-          <div class="relative">
-            <img id="LogoUtu" 
-                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" 
-                 alt="Logo UTU"
-                 class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-white border-opacity-30 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-            <div class="absolute -inset-1 bg-utu-yellow rounded-2xl opacity-0 group-hover:opacity-20 blur-sm transition-all duration-500"></div>
-          </div>
+          <div class="relative group">
+  <img id="LogoUtu" 
+       src="./assets/img/logo.webp" 
+       alt="Logo UTU"
+       class="w-16 h-16 md:w-20 md:h-20 rounded-2xl border-2 border-white border-opacity-30 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+  <div class="absolute -inset-1 bg-utu-yellow rounded-2xl opacity-0 group-hover:opacity-20 blur-sm transition-all duration-500"></div>
+</div>
+
           <div class="flex flex-col text-center lg:text-left">
             <span class="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-utu-yellow bg-clip-text text-transparent">
               UTU - Trinidad Flores
@@ -354,7 +355,8 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       <!-- Indicadores Mejorados -->
       <div id="indicators" class="carousel-indicators absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
     </div>
-
+    <br>
+    <br>
     <!-- Eventos/Noticias Mejorados -->
     <div class="news-section ">
       <div class="flex items-center justify-between mb-6 sm:mb-8">

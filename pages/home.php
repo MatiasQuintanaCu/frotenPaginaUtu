@@ -20,10 +20,14 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
           colors: {
             'utu-blue': '#003366',
             'utu-blue-light': '#004d99',
-            'utu-orange': '#ff6b35',
-            'utu-yellow': '#ffcc00',
-            'utu-green': '#27ae60',
-            'utu-purple': '#8e44ad',
+            'utu-blue-dark': '#002244',
+            'utu-gray': '#4a5568',
+            'utu-gray-light': '#718096',
+            'utu-green': '#2d7744',
+            'utu-red': '#c53030',
+          },
+          fontFamily: {
+            'sans': ['Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
           }
         }
       }
@@ -31,26 +35,20 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
   </script>
   <style>
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
     }
     
     .carousel-item.active {
-      animation: fadeIn 0.8s ease;
+      animation: fadeIn 0.5s ease;
     }
+    
     .dropdown.active .dropdown-menu {
       opacity: 1 !important;
       visibility: visible !important;
       transform: translateY(0) !important;
     }
+    
     .dropdown-menu {
       opacity: 0;
       visibility: hidden;
@@ -58,119 +56,103 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       transition: all 0.3s ease;
     }
     
-    /* Nuevos estilos mejorados */
-    .nav-glass {
-      background: rgba(0, 51, 102, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* Estilos mejorados para institución pública */
+    .nav-institutional {
+      background: #003366;
+      border-bottom: 2px solid #2d7744;
     }
     
-    .btn-modern {
-      background: linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to));
-      border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
+    .btn-institutional {
+      background-color: #003366;
+      color: white;
+      border-radius: 4px;
+      padding: 10px 20px;
       font-weight: 600;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .btn-modern::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
+    .btn-institutional:hover {
+      background-color: #002244;
+      transform: translateY(-1px);
     }
     
-    .btn-modern:hover::before {
-      left: 100%;
+    .btn-secondary {
+      background-color: #2d7744;
+      color: white;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
     
-    .btn-modern:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    .notification-toast {
-      animation: slideIn 0.5s ease, fadeIn 0.5s ease;
+    .btn-secondary:hover {
+      background-color: #236335;
     }
     
     .event-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-      border-radius: 16px;
-      padding: 24px;
+      background: white;
+      border-radius: 6px;
+      padding: 20px;
       border: 1px solid #e2e8f0;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .event-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, #ff6b35, #ffcc00);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     .event-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      border-color: #cbd5e0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
     .event-date {
-      background: linear-gradient(135deg, #003366, #004d99);
+      background: #003366;
       color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 4px;
       font-weight: 600;
       font-size: 0.875rem;
     }
     
     .carousel-overlay {
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
     }
     
     .user-badge {
-      background: linear-gradient(135deg, #ffcc00, #ff6b35);
+      background: #2d7744;
       color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
+      padding: 4px 10px;
+      border-radius: 4px;
       font-size: 0.75rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     
-    .footer-gradient {
-      background: linear-gradient(135deg, #003366 0%, #002244 100%);
+    .footer-institutional {
+      background: #002244;
     }
     
-    .social-icon {
-      transition: all 0.3s ease;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .social-icon:hover {
-      background: #ffcc00;
-      transform: translateY(-3px) rotate(5deg);
+    .section-title {
+      border-bottom: 2px solid #2d7744;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
       color: #003366;
+    }
+    
+    .institutional-logo {
+      border: 2px solid #2d7744;
+    }
+    
+    .accent-color {
+      color: #2d7744;
+    }
+    
+    .bg-accent {
+      background-color: #2d7744;
     }
     
     /* Responsive improvements */
     @media (max-width: 768px) {
       .hero-buttons {
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
       }
       
       .event-grid {
@@ -178,55 +160,29 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         gap: 16px;
       }
     }
-    
-    /* Loading animations */
-    .loading-pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(to bottom, #003366, #004d99);
-      border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(to bottom, #002244, #003366);
-    }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans">
 
-  <!-- NAV MEJORADO -->
-  <nav class="nav-glass text-white shadow-2xl sticky top-0 z-50">
+  <!-- NAV MEJORADO - Estilo institucional -->
+  <nav class="nav-institutional text-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
       <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
         
         <!-- Logo y Marca Mejorado -->
-        <div class="flex items-center gap-4 group cursor-pointer">
-          <div class="relative group">
-  <img id="LogoUtu" 
-       src="./assets/img/logo.webp" 
-       alt="Logo UTU"
-       class="w-16 h-16 md:w-20 md:h-20 rounded-2xl border-2 border-white border-opacity-30 shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-  <div class="absolute -inset-1 bg-utu-yellow rounded-2xl opacity-0 group-hover:opacity-20 blur-sm transition-all duration-500"></div>
-</div>
-
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <img id="LogoUtu" 
+                 src="./assets/img/logo.webp" 
+                 alt="Logo UTU"
+                 class="w-14 h-14 md:w-16 md:h-16 institutional-logo rounded-lg shadow-md">
+          </div>
           <div class="flex flex-col text-center lg:text-left">
-            <span class="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-utu-yellow bg-clip-text text-transparent">
+            <span class="text-lg sm:text-xl lg:text-2xl font-bold">
               UTU - Trinidad Flores
             </span>
-            <span class="text-xs text-utu-yellow opacity-90 font-medium mt-1">
+            <span class="text-xs text-gray-300 font-medium mt-1">
               Educación Técnica de Excelencia
             </span>
           </div>
@@ -235,36 +191,36 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         <!-- Dropdown Contacto Mejorado -->
         <div class="relative dropdown" id="contactDropdown">
           <button onclick="toggleDropdown()" 
-                  class="btn-modern from-utu-blue to-utu-blue-light text-white font-semibold px-5 py-3 flex items-center gap-3 group">
-            <i class="fas fa-phone-alt text-utu-yellow group-hover:scale-110 transition-transform duration-300"></i>
+                  class="btn-institutional font-semibold px-4 py-2 flex items-center gap-2">
+            <i class="fas fa-phone-alt"></i>
             <span>Contacto</span>
-            <i class="fas fa-chevron-down text-utu-yellow text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+            <i class="fas fa-chevron-down text-xs"></i>
           </button>
-          <div class="dropdown-menu absolute right-0 mt-3 bg-white rounded-2xl min-w-[320px] shadow-2xl overflow-hidden z-50 border border-gray-200">
-            <div class="p-1">
-              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
-                <i class="fas fa-map-marker-alt text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+          <div class="dropdown-menu absolute right-0 mt-2 bg-white rounded-md min-w-[280px] shadow-lg overflow-hidden z-50 border border-gray-200">
+            <div class="p-2">
+              <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded transition-all duration-200">
+                <i class="fas fa-map-marker-alt text-utu-blue mt-1"></i>
                 <div>
                   <strong class="block text-utu-blue font-semibold mb-1">Sede Central</strong>
                   <small class="text-gray-600 text-sm">25 de agosto Nº 427 esq. Batlle y Ordoñez</small>
                 </div>
               </div>
-              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
-                <i class="fas fa-phone text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+              <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded transition-all duration-200">
+                <i class="fas fa-phone text-utu-blue mt-1"></i>
                 <div>
                   <strong class="block text-utu-blue font-semibold mb-1">Teléfono</strong>
                   <small class="text-gray-600 text-sm">4364 8962 - 4364 2426</small>
                 </div>
               </div>
-              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
-                <i class="fas fa-envelope text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+              <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded transition-all duration-200">
+                <i class="fas fa-envelope text-utu-blue mt-1"></i>
                 <div>
                   <strong class="block text-utu-blue font-semibold mb-1">Correo</strong>
                   <small class="text-gray-600 text-sm">tecnicatrinidad@gmail.com</small>
                 </div>
               </div>
-              <div class="flex items-start gap-4 p-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-utu-blue hover:bg-opacity-5 rounded-xl transition-all duration-200 group">
-                <i class="fas fa-clock text-utu-blue text-lg mt-1 group-hover:scale-110 transition-transform duration-300"></i>
+              <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded transition-all duration-200">
+                <i class="fas fa-clock text-utu-blue mt-1"></i>
                 <div>
                   <strong class="block text-utu-blue font-semibold mb-1">Horario</strong>
                   <small class="text-gray-600 text-sm">Lun a Vie: 7:00 - 23:30</small>
@@ -282,16 +238,16 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
               <div class="flex items-center gap-3 hero-buttons">
                 <!-- Botón de Chat -->
                 <button onclick="goToChat()" 
-                        class="btn-modern from-utu-green to-green-600 text-white font-semibold px-4 py-3 flex items-center gap-2 relative">
+                        class="btn-institutional font-semibold px-3 py-2 flex items-center gap-2">
                   <i class="fas fa-comments"></i>
                   <span class="hidden sm:inline">Chat</span>
-                  <div id="chat-notification" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full hidden"></div>
+                  <div id="chat-notification" class="absolute -top-1 -right-1 w-3 h-3 bg-utu-red rounded-full hidden"></div>
                 </button>
                 
                 <!-- Botón de Gestionar Noticias (solo ADMIN) -->
                 <?php if ($userRol === 'ADMIN'): ?>
                   <button onclick="goToGestion()" 
-                          class="btn-modern from-utu-purple to-purple-600 text-white font-semibold px-4 py-3 flex items-center gap-2">
+                          class="btn-institutional font-semibold px-3 py-2 flex items-center gap-2">
                     <i class="fas fa-newspaper"></i>
                     <span class="hidden sm:inline">Gestionar</span>
                   </button>
@@ -300,13 +256,13 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
             <?php endif; ?>
             
             <!-- Información del usuario mejorada -->
-            <div class="flex items-center gap-3 bg-white bg-opacity-10 rounded-xl px-4 py-3 border border-white border-opacity-20 backdrop-blur-sm">
+            <div class="flex items-center gap-3 bg-white bg-opacity-10 rounded-lg px-3 py-2">
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-utu-yellow to-utu-orange flex items-center justify-center text-white font-bold text-sm">
+                <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white font-bold text-sm">
                   <?php echo strtoupper(substr($userName, 0, 1)); ?>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-white font-semibold text-sm">¡Hola, <?php echo htmlspecialchars(explode(' ', $userName)[0]); ?>!</span>
+                  <span class="text-white font-semibold text-sm"><?php echo htmlspecialchars(explode(' ', $userName)[0]); ?></span>
                   <span class="user-badge text-xs"><?php echo $userRol; ?></span>
                 </div>
               </div>
@@ -314,13 +270,13 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
             
             <!-- Botón de Cerrar Sesión Mejorado -->
             <button onclick="logout()" 
-                    class="btn-modern from-red-500 to-red-600 text-white font-semibold px-4 py-3 flex items-center gap-2 hover:from-red-600 hover:to-red-700">
+                    class="btn-secondary font-semibold px-3 py-2 flex items-center gap-2">
               <i class="fas fa-sign-out-alt"></i>
               <span class="hidden sm:inline">Salir</span>
             </button>
           <?php else: ?>
             <button onclick="goToLogin()" 
-                    class="btn-modern from-utu-orange to-utu-yellow text-white font-semibold px-6 py-3 flex items-center gap-2">
+                    class="btn-secondary font-semibold px-4 py-2 flex items-center gap-2">
               <i class="fas fa-sign-in-alt"></i>
               <span>Acceder</span>
             </button>
@@ -334,139 +290,126 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-6 sm:pb-8 flex-1 w-full">
     
     <!-- Banner Carousel Mejorado -->
-    <div class="relative w-full mb-8 sm:mb-12 overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl" id="carousel">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-80 px-8 py-6 rounded-2xl loading-text flex items-center gap-3">
-        <div class="w-6 h-6 border-2 border-utu-yellow border-t-transparent rounded-full animate-spin"></div>
-        <span class="text-lg font-medium">Cargando información...</span>
+    <div class="relative w-full mb-8 sm:mb-10 overflow-hidden rounded-lg shadow-md" id="carousel">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-70 px-6 py-4 rounded-lg loading-text flex items-center gap-3">
+        <div class="w-5 h-5 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+        <span class="text-base font-medium">Cargando información...</span>
       </div>
       
       <!-- Controles Mejorados -->
       <div class="carousel-controls absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4 sm:px-6 z-20">
         <button onclick="prevSlide()" 
-                class="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 hover:scale-110 hover:shadow-2xl transition-all duration-300 flex items-center justify-center backdrop-blur-md border border-white border-opacity-30">
-          <i class="fas fa-chevron-left text-lg"></i>
+                class="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+          <i class="fas fa-chevron-left"></i>
         </button>
         <button onclick="nextSlide()" 
-                class="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 hover:scale-110 hover:shadow-2xl transition-all duration-300 flex items-center justify-center backdrop-blur-md border border-white border-opacity-30">
-          <i class="fas fa-chevron-right text-lg"></i>
+                class="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 text-white rounded-full hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+          <i class="fas fa-chevron-right"></i>
         </button>
       </div>
       
       <!-- Indicadores Mejorados -->
-      <div id="indicators" class="carousel-indicators absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
+      <div id="indicators" class="carousel-indicators absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
     </div>
-    <br>
-    <br>
+
     <!-- Eventos/Noticias Mejorados -->
-    <div class="news-section ">
-      <div class="flex items-center justify-between mb-6 sm:mb-8">
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-utu-blue flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-r from-utu-orange to-utu-yellow flex items-center justify-center">
-            <i class="fas fa-calendar-alt text-white text-xl"></i>
-          </div>
-          Eventos y Noticias
-        </h2>
-        <div class="text-sm text-gray-500 bg-gray-100 px-3 py-2 rounded-lg">
-          <i class="fas fa-info-circle text-utu-blue mr-2"></i>
-          Actualizado recientemente
-        </div>
-      </div>
+    <div class="news-section">
+      <h2 class="section-title text-2xl sm:text-3xl font-bold mb-6">
+        Eventos y Noticias
+      </h2>
       <div id="eventos-container">
         <div class="loading-text text-center text-gray-600 py-12 flex flex-col items-center gap-4">
-          <div class="w-12 h-12 border-4 border-utu-blue border-t-transparent rounded-full animate-spin"></div>
-          <span class="text-lg font-medium">Cargando eventos...</span>
+          <div class="w-10 h-10 border-4 border-utu-blue border-t-transparent rounded-full animate-spin"></div>
+          <span class="text-base font-medium">Cargando eventos...</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- FOOTER MEJORADO -->
-  <footer class="footer-gradient text-gray-300 pt-16 mt-16 shadow-2xl">
+  <footer class="footer-institutional text-gray-300 pt-12 mt-12">
     <div class="footer-container max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
         
         <!-- Logo y Social Mejorado -->
         <div class="footer-section">
           <div class="footer-logo mb-6">
-            <h3 class="text-3xl font-bold bg-gradient-to-r from-utu-yellow to-utu-orange bg-clip-text text-transparent mb-2">UTU TRINIDAD</h3>
-            <p class="text-utu-yellow text-sm font-medium mb-4">Escuela Técnica Trinidad Flores</p>
+            <h3 class="text-2xl font-bold text-white mb-2">UTU TRINIDAD</h3>
+            <p class="text-accent text-sm font-medium mb-4">Escuela Técnica Trinidad Flores</p>
           </div>
           <p class="text-gray-400 text-sm leading-relaxed mb-6">
             Formando profesionales técnicos con excelencia académica desde 1942.
             Educación de calidad para el desarrollo del país.
           </p>
           <div class="footer-social flex gap-3">
-            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
-              <i class="fab fa-facebook-f"></i>
+            <a href="#" class="w-8 h-8 rounded-md bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-accent transition-colors">
+              <i class="fab fa-facebook-f text-sm"></i>
             </a>
-            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
-              <i class="fab fa-twitter"></i>
+            <a href="#" class="w-8 h-8 rounded-md bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-accent transition-colors">
+              <i class="fab fa-twitter text-sm"></i>
             </a>
-            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-icon w-10 h-10 rounded-xl flex items-center justify-center text-utu-yellow hover:shadow-lg">
-              <i class="fab fa-linkedin-in"></i>
+            <a href="#" class="w-8 h-8 rounded-md bg-gray-700 flex items-center justify-center text-gray-300 hover:bg-accent transition-colors">
+              <i class="fab fa-instagram text-sm"></i>
             </a>
           </div>
         </div>
 
         <!-- Enlaces Rápidos Mejorado -->
         <div class="footer-section">
-          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Enlaces Rápidos</h4>
-          <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Inicio
+          <h4 class="text-white text-lg font-semibold mb-4">Enlaces Rápidos</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Inicio
             </a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Sobre Nosotros
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Sobre Nosotros
             </a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Carreras y Cursos
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Carreras y Cursos
             </a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Inscripciones
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Inscripciones
             </a></li>
           </ul>
         </div>
 
         <!-- Servicios Mejorado -->
         <div class="footer-section">
-          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Servicios</h4>
-          <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Biblioteca Virtual
+          <h4 class="text-white text-lg font-semibold mb-4">Servicios</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Biblioteca Virtual
             </a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Plataforma Educativa
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Plataforma Educativa
             </a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Bedelía Online
+            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Bedelía Online
             </a></li>
-            <li><a href="login" class="text-gray-400 text-sm hover:text-utu-yellow hover:pl-2 transition-all duration-300 flex items-center gap-2">
-              <i class="fas fa-chevron-right text-xs"></i> Portal Estudiantes
+            <li><a href="login" class="text-gray-400 text-sm hover:text-accent transition-colors duration-300">
+              Portal Estudiantes
             </a></li>
           </ul>
         </div>
 
         <!-- Contacto Mejorado -->
         <div class="footer-section">
-          <h4 class="text-white text-lg font-semibold mb-6 pb-2 border-b-2 border-utu-yellow inline-block">Contacto</h4>
-          <ul class="space-y-4">
+          <h4 class="text-white text-lg font-semibold mb-4">Contacto</h4>
+          <ul class="space-y-3">
             <li class="flex items-start gap-3 text-sm text-gray-400">
-              <i class="fas fa-map-marker-alt text-utu-yellow mt-1"></i>
+              <i class="fas fa-map-marker-alt text-accent mt-1"></i>
               <span>25 de agosto Nº 427<br>Trinidad, Flores</span>
             </li>
             <li class="flex items-start gap-3 text-sm text-gray-400">
-              <i class="fas fa-phone text-utu-yellow mt-1"></i>
+              <i class="fas fa-phone text-accent mt-1"></i>
               <span>4364 8962 - 4364 2426</span>
             </li>
             <li class="flex items-start gap-3 text-sm text-gray-400">
-              <i class="fas fa-envelope text-utu-yellow mt-1"></i>
+              <i class="fas fa-envelope text-accent mt-1"></i>
               <span>tecnicatrinidad@gmail.com</span>
             </li>
             <li class="flex items-start gap-3 text-sm text-gray-400">
-              <i class="fas fa-clock text-utu-yellow mt-1"></i>
+              <i class="fas fa-clock text-accent mt-1"></i>
               <span>Lun - Vie: 7:00 - 23:30</span>
             </li>
           </ul>
@@ -475,17 +418,17 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
     </div>
 
     <!-- Footer Bottom Mejorado -->
-    <div class="bg-black bg-opacity-30 py-6 border-t border-utu-yellow border-opacity-20">
+    <div class="bg-black bg-opacity-30 py-4 border-t border-gray-700">
       <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-gray-400 text-sm text-center md:text-left">
           &copy; 2025 Escuela Técnica Trinidad Flores (UTU). Todos los derechos reservados.
         </p>
         <div class="flex items-center gap-4 text-sm">
-          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Privacidad</a>
-          <span class="text-utu-yellow text-opacity-40">•</span>
-          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Términos</a>
-          <span class="text-utu-yellow text-opacity-40">•</span>
-          <a href="#" class="text-gray-400 hover:text-utu-yellow transition-colors duration-300">Mapa del Sitio</a>
+          <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">Privacidad</a>
+          <span class="text-gray-600">•</span>
+          <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">Términos</a>
+          <span class="text-gray-600">•</span>
+          <a href="#" class="text-gray-400 hover:text-accent transition-colors duration-300">Mapa del Sitio</a>
         </div>
       </div>
     </div>
@@ -529,8 +472,8 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       cont.innerHTML = '';
       for(let i = 0; i < n; i++){ 
         const d = document.createElement('div'); 
-        d.className = 'indicator w-3 h-3 rounded-full cursor-pointer transition-all duration-300 border-2 ' + 
-          (i === 0 ? 'active bg-utu-yellow border-utu-yellow scale-125 shadow-lg' : 'bg-white bg-opacity-50 border-white border-opacity-50');
+        d.className = 'indicator w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ' + 
+          (i === 0 ? 'active bg-accent' : 'bg-white bg-opacity-50');
         d.onclick = () => goToSlide(i); 
         cont.appendChild(d); 
       }
@@ -552,11 +495,11 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
     // Función para mostrar notificaciones mejorada
     function showNotification(message, type = 'success') {
       const notification = document.createElement('div');
-      const bgColor = type === 'success' ? 'bg-gradient-to-r from-utu-green to-green-600' : 'bg-gradient-to-r from-red-500 to-red-600';
+      const bgColor = type === 'success' ? 'bg-utu-green' : 'bg-utu-red';
       
-      notification.className = `notification-toast fixed top-6 right-6 px-6 py-4 rounded-2xl text-white font-semibold z-[10000] shadow-2xl ${bgColor} flex items-center gap-3`;
+      notification.className = `fixed top-6 right-6 px-6 py-3 rounded-md text-white font-semibold z-[10000] shadow-lg ${bgColor} flex items-center gap-3`;
       notification.innerHTML = `
-        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} text-xl"></i>
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
         <span>${message}</span>
       `;
       
@@ -584,9 +527,9 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       
       if (postsConImagen.length === 0) {
         const noData = document.createElement('div');
-        noData.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-80 px-8 py-6 rounded-2xl text-lg font-medium flex items-center gap-3';
+        noData.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white z-10 bg-black bg-opacity-70 px-6 py-4 rounded-lg text-base font-medium flex items-center gap-3';
         noData.innerHTML = `
-          <i class="fas fa-info-circle text-utu-yellow text-xl"></i>
+          <i class="fas fa-info-circle text-accent"></i>
           <span>No hay información disponible</span>
         `;
         c.appendChild(noData);
@@ -595,7 +538,7 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       
       postsConImagen.forEach((post, idx) => {
         const s = document.createElement('div');
-        s.className = 'carousel-item relative w-full h-[400px] sm:h-[500px] lg:h-[600px]' + (idx === 0 ? ' active' : ' hidden');
+        s.className = 'carousel-item relative w-full h-[350px] sm:h-[450px] lg:h-[500px]' + (idx === 0 ? ' active' : ' hidden');
         
         const imageUrl = `data:image/jpeg;base64,${post.imagen}`;
         const fecha = new Date(post.fecha_publicacion).toLocaleDateString('es-UY', {
@@ -606,10 +549,10 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         
         s.innerHTML = `
           <img src="${imageUrl}" alt="${post.titulo}" class="w-full h-full object-cover" onerror="this.style.display='none'">
-          <div class="carousel-overlay absolute bottom-0 left-0 right-0 text-white px-6 sm:px-10 lg:px-16 pt-16 pb-8 sm:pb-12">
-            <h3 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 leading-tight drop-shadow-2xl">${post.titulo}</h3>
-            <p class="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed max-w-4xl mb-6 drop-shadow line-clamp-2">${post.contenido}</p>
-            <div class="flex items-center gap-6 text-sm sm:text-base text-utu-yellow font-semibold">
+          <div class="carousel-overlay absolute bottom-0 left-0 right-0 text-white px-6 sm:px-8 lg:px-10 pt-12 pb-6 sm:pb-8">
+            <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 leading-tight">${post.titulo}</h3>
+            <p class="text-gray-200 text-sm sm:text-base leading-relaxed max-w-4xl mb-4 line-clamp-2">${post.contenido}</p>
+            <div class="flex items-center gap-4 text-xs sm:text-sm text-accent font-semibold">
               <span class="flex items-center gap-2">
                 <i class="fas fa-user"></i> ${post.autor.nombre}
               </span>
@@ -642,8 +585,8 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         const m = document.createElement('div');
         m.className = 'text-center text-gray-600 py-12 flex flex-col items-center gap-4';
         m.innerHTML = `
-          <i class="fas fa-calendar-times text-4xl text-utu-blue opacity-50"></i>
-          <span class="text-lg font-medium">No hay eventos disponibles</span>
+          <i class="fas fa-calendar-times text-3xl text-utu-blue opacity-50"></i>
+          <span class="text-base font-medium">No hay eventos disponibles</span>
           <p class="text-gray-500 text-sm">Vuelve pronto para ver las próximas actividades</p>
         `;
         cont.appendChild(m);
@@ -656,7 +599,7 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
       
       eventos.forEach(evento => {
         const it = document.createElement('div');
-        it.className = 'event-card group cursor-pointer';
+        it.className = 'event-card cursor-pointer';
         
         const fecha = new Date(evento.fecha_evento).toLocaleDateString('es-UY', {
           day: 'numeric',
@@ -672,17 +615,14 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         it.innerHTML = `
           <div class="flex justify-between items-start mb-4">
             <div class="event-date">${fecha}</div>
-            <div class="text-utu-orange font-semibold text-sm bg-orange-50 px-3 py-1 rounded-lg">${hora}</div>
+            <div class="text-utu-gray font-semibold text-sm">${hora}</div>
           </div>
-          <h3 class="text-xl font-bold text-utu-blue mb-3 group-hover:text-utu-orange transition-colors duration-300">${evento.titulo}</h3>
+          <h3 class="text-lg font-bold text-utu-blue mb-3">${evento.titulo}</h3>
           <p class="text-gray-600 leading-relaxed mb-4 line-clamp-3">${evento.descripcion}</p>
           <div class="flex items-center justify-between pt-4 border-t border-gray-200">
             <div class="flex items-center gap-2 text-sm text-gray-500">
               <i class="fas fa-user text-utu-blue"></i>
               <span>${evento.autor.nombre}</span>
-            </div>
-            <div class="text-utu-blue group-hover:text-utu-orange transition-colors duration-300">
-              <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
             </div>
           </div>
         `;
@@ -742,11 +682,11 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
         const eventos = document.getElementById('eventos-container');
         
         const errorDiv = document.createElement('div');
-        errorDiv.className = 'text-center text-red-600 py-12 flex flex-col items-center gap-3';
+        errorDiv.className = 'text-center text-utu-red py-12 flex flex-col items-center gap-3';
         errorDiv.innerHTML = `
-          <i class="fas fa-exclamation-triangle text-3xl"></i>
-          <span class="text-lg font-medium">Error al cargar la información</span>
-          <button onclick="cargarDatos()" class="btn-modern from-utu-blue to-utu-blue-light text-white px-6 py-3 mt-4">
+          <i class="fas fa-exclamation-triangle text-2xl"></i>
+          <span class="text-base font-medium">Error al cargar la información</span>
+          <button onclick="cargarDatos()" class="btn-institutional px-4 py-2 mt-4">
             <i class="fas fa-redo mr-2"></i> Reintentar
           </button>
         `;

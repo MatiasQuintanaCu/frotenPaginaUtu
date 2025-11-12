@@ -1,0 +1,91 @@
+<?php
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json; charset=UTF-8');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+
+require_once __DIR__ . '/../config/Database.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Método no permitido']);
+    exit;
+}
+
+try {
+    $database = new Database();
+    $conn = $database->getConnection();
+    
+    if (!$conn) {
+        throw new Exception('Error de conexión a la base de datos');
+    }
+
+    // Obtener datos JSON (ahora todo viene como JSON)
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+
+    // Validar datos
+    if (empty($data['titulo']) || empty($data['contenido'])) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Título y contenido son obligatorios']);
+        exit;
+    }
+
+    // Validar que la imagen sea obligatoria
+    if (empty($data['imagen'])) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'La imagen es obligatoria']);
+        exit;
+    }
+
+    $titulo = $data['titulo'];
+    $contenido = $data['contenido'];
+    $imagenBase64 = $data['imagen']; // Ya viene en base64 desde el frontend
+
+    // Validar formato base64
+    if (!preg_match('/^data:image\/(jpeg|jpg|png|gif|webp);base64,/', $imagenBase64)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Formato de imagen inválido']);
+        exit;
+    }
+
+    // Validar tamaño aproximado (base64 es ~33% más grande que el archivo original)
+    // 5MB * 1.33 = ~6.6MB en base64
+    if (strlen($imagenBase64) > 6900000) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'La imagen no debe superar 5MB']);
+        exit;
+    }
+
+    // ID del autor (cambiar por sesión real)
+    $id_autor = 1;
+
+    // Insertar post con imagen en base64
+    $query = "INSERT INTO posts (titulo, contenido, id_autor, img) 
+              VALUES (:titulo, :contenido, :id_autor, :img)";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':titulo', $titulo);
+    $stmt->bindParam(':contenido', $contenido);
+    $stmt->bindParam(':id_autor', $id_autor, PDO::PARAM_INT);
+    $stmt->bindParam(':img', $imagenBase64);
+
+    if ($stmt->execute()) {
+        http_response_code(201);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Noticia creada exitosamente',
+            'id' => $conn->lastInsertId()
+        ]);
+    } else {
+        throw new Exception('Error al crear la noticia');
+    }
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Error del servidor: ' . $e->getMessage()
+    ]);
+}
+?>

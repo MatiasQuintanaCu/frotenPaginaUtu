@@ -382,7 +382,6 @@ $userRol = $isLoggedIn ? $_SESSION['user_rol'] : '';
           <ul class="space-y-2">
             <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors">Biblioteca Virtual</a></li>
             <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors">Plataforma Educativa</a></li>
-            <li><a href="#" class="text-gray-400 text-sm hover:text-accent transition-colors">Bedelía Online</a></li>
             <li><a href="login" class="text-gray-400 text-sm hover:text-accent transition-colors">Portal Estudiantes</a></li>
           </ul>
         </div>

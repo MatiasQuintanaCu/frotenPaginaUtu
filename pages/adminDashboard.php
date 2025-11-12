@@ -1,10 +1,48 @@
+<?php
+session_start();
+
+// Validar que el usuario esté logueado y sea administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: login.php');
+    exit();
+}
+
+if ($_SESSION['user_rol'] !== 'ADMIN') {
+    header('Location: index.php');
+    exit();
+}
+
+$userName = $_SESSION['user_name'];
+$userRol = $_SESSION['user_rol'];
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UTU - Universidad Técnica del Uruguay</title>
+  <title>Administración - UTU Trinidad Flores</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'utu-blue': '#003366',
+            'utu-blue-light': '#004d99',
+            'utu-blue-dark': '#002244',
+            'utu-gray': '#4a5568',
+            'utu-gray-light': '#718096',
+            'utu-green': '#2d7744',
+            'utu-red': '#c53030',
+          },
+          fontFamily: {
+            'sans': ['Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
     * {
       margin: 0;
@@ -14,83 +52,118 @@
 
     body {
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Arial', sans-serif;
-      background: linear-gradient(135deg, #e8f0f8 0%, #f8f9fa 100%);
-      color: #333;
+      background: #f8fafc;
+      color: #2d3748;
       line-height: 1.6;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    nav {
+    /* Navbar estilo institucional */
+    .nav-institutional {
       background: #003366;
       color: white;
-      padding: 20px 40px;
+      padding: 16px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    nav::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      animation: shine 3s infinite;
-    }
-
-    @keyframes shine {
-      0% { left: -100%; }
-      50%, 100% { left: 100%; }
+      box-shadow: 0 2px 10px rgba(0, 51, 102, 0.2);
+      border-bottom: 2px solid #2d7744;
     }
 
     .nav-left {
       display: flex;
       align-items: center;
       gap: 15px;
-      position: relative;
-      z-index: 1;
     }
 
     .nav-left span {
-      font-size: 1.4em;
+      font-size: 1.3em;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     #LogoUtu { 
-      width: 65px; 
-      height: 65px;
-      border-radius: 50%; 
+      width: 60px; 
+      height: 60px;
+      border-radius: 8px;
       object-fit: cover;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: all 0.4s ease;
-      animation: float 3s ease-in-out infinite;
+      border: 2px solid #2d7744;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 6px;
     }
 
-    #LogoUtu:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2d7744;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
     }
 
+    .user-badge {
+      background: #2d7744;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .btn-institutional {
+      background-color: #003366;
+      color: white;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-institutional:hover {
+      background-color: #002244;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: #2d7744;
+      color: white;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #236335;
+    }
+
+    /* Contenido principal */
     .main-container {
       flex: 1;
-      padding: 40px 20px;
+      padding: 30px 20px;
       display: flex;
-      max-width: 1600px;
+      max-width: 1400px;
       margin: 0 auto;
       width: 100%;
     }
@@ -98,172 +171,84 @@
     .forms-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 30px;
       width: 100%;
     }
 
     .form-section {
       background: white;
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       display: flex;
       flex-direction: column;
-      gap: 25px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      animation: slideUp 0.6s ease-out;
+      gap: 20px;
+      border: 1px solid #e2e8f0;
     }
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .form-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(90deg, #003366, #0066cc, #003366);
-      background-size: 200% 100%;
-      animation: gradientMove 3s linear infinite;
-    }
-
-    .form-section:nth-child(2)::before {
-      background: linear-gradient(90deg, #ff6b35, #ff8c5a, #ff6b35);
-      background-size: 200% 100%;
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
-
-    .form-section:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
-    }
-
-    .form-section h2 {
-      color: #003d82;
-      font-size: 2em;
+    .section-title {
+      border-bottom: 2px solid #2d7744;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      color: #003366;
+      font-size: 1.5em;
       font-weight: 700;
-      text-align: center;
-      margin-bottom: 15px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .form-section h2 i {
-      font-size: 1.1em;
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      gap: 10px;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      animation: fadeIn 0.5s ease-out backwards;
-    }
-
-    .form-group:nth-child(1) { animation-delay: 0.1s; }
-    .form-group:nth-child(2) { animation-delay: 0.2s; }
-    .form-group:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      gap: 8px;
     }
 
     .form-group label {
       font-weight: 600;
-      color: #495057;
-      font-size: 1em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .form-group label::before {
-      content: '•';
-      color: #003366;
-      font-size: 1.5em;
-      line-height: 0;
+      color: #4a5568;
+      font-size: 0.95em;
     }
 
     .form-input {
-      padding: 18px 20px;
-      border: 2px solid #e0e3e8;
-      border-radius: 12px;
-      font-size: 1.05em;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      font-size: 1em;
       font-family: 'Segoe UI', sans-serif;
-      transition: all 0.3s ease;
-      background: #fafbfc;
+      transition: all 0.2s ease;
+      background: #fff;
     }
 
     .form-input:hover {
-      border-color: #b0b8c0;
-      background: white;
+      border-color: #a0aec0;
     }
 
     .form-input:focus {
       outline: none;
       border-color: #003366;
-      box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1), 0 4px 12px rgba(0, 51, 102, 0.15);
-      background: white;
-      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
     }
 
     textarea.form-input {
-      min-height: 160px;
+      min-height: 120px;
       resize: vertical;
-      flex: 1;
     }
 
     .file-input-wrapper {
       position: relative;
-      padding: 35px;
-      border: 3px dashed #d0d5dd;
-      border-radius: 12px;
+      padding: 20px;
+      border: 2px dashed #cbd5e0;
+      border-radius: 4px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 110px;
+      transition: all 0.2s ease;
+      background: #f7fafc;
     }
 
     .file-input-wrapper:hover {
       border-color: #003366;
-      background: linear-gradient(135deg, #e8f0f8 0%, #d8e5f5 100%);
-      transform: scale(1.02);
-      box-shadow: 0 4px 15px rgba(0, 51, 102, 0.1);
+      background: #edf2f7;
     }
 
     .file-input-wrapper input[type="file"] {
@@ -280,106 +265,59 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       pointer-events: none;
     }
 
     .file-input-label i {
-      font-size: 2.5em;
+      font-size: 1.5em;
       color: #003366;
-      transition: all 0.3s ease;
-    }
-
-    .file-input-wrapper:hover .file-input-label i {
-      transform: translateY(-5px) scale(1.1);
-      color: #0066cc;
     }
 
     .file-input-label span {
-      color: #6c757d;
-      font-size: 0.95em;
-      font-weight: 500;
+      color: #718096;
+      font-size: 0.9em;
     }
 
     .submit-btn {
-      padding: 18px 40px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 12px;
-      font-size: 1.15em;
-      font-weight: 700;
+      border-radius: 4px;
+      font-size: 1em;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .submit-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .submit-btn:hover::before {
-      width: 400px;
-      height: 400px;
-    }
-
-    .submit-btn i,
-    .submit-btn span {
-      position: relative;
-      z-index: 1;
+      gap: 8px;
     }
 
     .submit-btn-evento {
-      background: linear-gradient(135deg, #003366 0%, #004080 100%);
+      background: #003366;
       color: white;
-      box-shadow: 0 6px 20px rgba(0, 51, 102, 0.3);
     }
 
     .submit-btn-evento:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0, 51, 102, 0.4);
-    }
-
-    .submit-btn-evento:active {
-      transform: translateY(-1px);
+      background: #002244;
     }
 
     .submit-btn-noticia {
-      background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+      background: #2d7744;
       color: white;
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
     }
 
     .submit-btn-noticia:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+      background: #236335;
     }
 
-    .submit-btn-noticia:active {
-      transform: translateY(-1px);
-    }
-
-    footer {
-      background: #003366;
-      color: white;
-      padding: 25px 20px;
+    /* Footer */
+    .footer-institutional {
+      background: #002244;
+      color: #cbd5e0;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 -4px 20px rgba(0, 51, 102, 0.2);
       margin-top: 40px;
     }
 
@@ -389,9 +327,8 @@
     }
 
     .footer-content p { 
-      margin-bottom: 12px; 
+      margin-bottom: 10px; 
       font-size: 14px;
-      opacity: 0.95;
     }
 
     .footer-links {
@@ -402,38 +339,29 @@
     }
 
     .footer-links a {
-      color: #fff;
+      color: #cbd5e0;
       text-decoration: none;
       font-size: 14px;
-      transition: all 0.3s ease;
-      padding: 6px 12px;
-      border-radius: 6px;
+      transition: all 0.2s ease;
     }
 
     .footer-links a:hover { 
-      color: #ffcc00;
-      background: rgba(255, 204, 0, 0.15);
-      transform: translateY(-2px);
+      color: #2d7744;
     }
 
-    input[type="date"].form-input {
-      cursor: pointer;
-    }
-
+    /* Responsive */
     @media (max-width: 1024px) {
       .forms-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-      }
-      
-      .main-container {
-        padding: 30px 15px;
+        gap: 25px;
       }
     }
 
     @media (max-width: 768px) {
-      nav {
-        padding: 15px 20px;
+      .nav-institutional {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 15px;
       }
 
       .nav-left span {
@@ -441,32 +369,59 @@
       }
 
       #LogoUtu {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
       }
 
       .form-section {
-        padding: 35px 25px;
+        padding: 20px;
       }
       
-      .form-section h2 {
-        font-size: 1.6em;
+      .section-title {
+        font-size: 1.3em;
       }
+    }
 
-      .submit-btn {
-        padding: 16px 35px;
-        font-size: 1em;
-      }
+    /* Notificaciones */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 20px;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: #2d7744;
+    }
+
+    .notification.error {
+      background: #c53030;
     }
   </style>
 </head>
 <body>
 
-  <nav>
+  <nav class="nav-institutional">
     <div class="nav-left">
-      <img id="LogoUtu" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw9e0Ez8kcPL3R7GtTdsIszwJ8M4JpSefntg&s" alt="LogoUtu">
-      <span>UTU - Universidad Técnica del Uruguay</span>
+      <img id="LogoUtu" src="./assets/img/logo.webp" alt="Logo UTU">
+      <span>UTU - Trinidad Flores</span>
     </div>
+    
+    
   </nav>
 
   <div class="main-container">
@@ -474,7 +429,10 @@
       
       <!-- Formulario Crear Evento -->
       <div class="form-section">
-        <h2><i class="fas fa-calendar-plus"></i> Crear Evento</h2>
+        <h2 class="section-title">
+          <i class="fas fa-calendar-plus"></i>
+          Crear Evento
+        </h2>
         
         <form id="formEvento" onsubmit="submitEvento(event)">
           <div class="form-group">
@@ -513,14 +471,17 @@
 
           <button type="submit" class="submit-btn submit-btn-evento">
             <i class="fas fa-paper-plane"></i>
-            <span>Publicar Evento</span>
+            Publicar Evento
           </button>
         </form>
       </div>
 
       <!-- Formulario Crear Noticia -->
       <div class="form-section">
-        <h2><i class="fas fa-newspaper"></i> Crear Noticia</h2>
+        <h2 class="section-title">
+          <i class="fas fa-newspaper"></i>
+          Crear Noticia
+        </h2>
         
         <form id="formNoticia" onsubmit="submitNoticia(event)">
           <div class="form-group">
@@ -536,7 +497,7 @@
           </div>
 
           <div class="form-group">
-            <label for="contenido-noticia">Descripción</label>
+            <label for="contenido-noticia">Contenido</label>
             <textarea 
               id="contenido-noticia" 
               name="contenido" 
@@ -547,7 +508,7 @@
           </div>
 
           <div class="form-group">
-            <label>Publicar Imagen</label>
+            <label>Imagen (opcional)</label>
             <div class="file-input-wrapper">
               <input 
                 type="file" 
@@ -558,14 +519,14 @@
               >
               <div class="file-input-label">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <span id="file-name-noticia">Seleccionar imagen (opcional)</span>
+                <span id="file-name-noticia">Seleccionar imagen</span>
               </div>
             </div>
           </div>
 
           <button type="submit" class="submit-btn submit-btn-noticia">
             <i class="fas fa-paper-plane"></i>
-            <span>Publicar Noticia</span>
+            Publicar Noticia
           </button>
         </form>
       </div>
@@ -573,13 +534,13 @@
     </div>
   </div>
 
-  <footer>
+  <footer class="footer-institutional">
     <div class="footer-content">
-      <p>&copy; 2025 UTU - Universidad Técnica del Uruguay. Todos los derechos reservados.</p>
+      <p>&copy; 2025 UTU - Escuela Técnica Trinidad Flores. Todos los derechos reservados.</p>
       <div class="footer-links">
+        <a href="index.php">Inicio</a>
         <a href="#">Política de Privacidad</a>
         <a href="#">Términos de Servicio</a>
-        <a href="#">Acceso</a>
       </div>
     </div>
   </footer>
@@ -595,38 +556,87 @@
         span.style.color = '#003366';
         span.style.fontWeight = '600';
       } else {
-        span.textContent = 'Seleccionar imagen (opcional)';
-        span.style.color = '#6c757d';
+        span.textContent = 'Seleccionar imagen';
+        span.style.color = '#718096';
         span.style.fontWeight = '500';
       }
     }
 
-    function submitEvento(event) {
-      event.preventDefault();
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
       
-      const formData = new FormData(event.target);
+      document.body.appendChild(notification);
       
-      console.log('Datos del Evento:');
-      console.log('Nombre:', formData.get('nombre'));
-      console.log('Descripción:', formData.get('descripcion'));
-      console.log('Fecha:', formData.get('fecha_evento'));
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
       
-      alert('✅ Evento creado exitosamente!\n(Conectar con backend PHP)');
-      event.target.reset();
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 3000);
     }
 
-    function submitNoticia(event) {
+    async function submitEvento(event) {
       event.preventDefault();
       
       const formData = new FormData(event.target);
       
-      console.log('Datos de la Noticia:');
-      console.log('Título:', formData.get('titulo'));
-      console.log('Contenido:', formData.get('contenido'));
-      
-      alert('✅ Noticia creada exitosamente!\n(Conectar con backend PHP)');
-      event.target.reset();
+      try {
+        // Aquí iría la conexión con el backend
+        const response = await fetch('/api/v1/admin/crear-evento', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          showNotification('Evento creado exitosamente', 'success');
+          event.target.reset();
+        } else {
+          throw new Error('Error al crear evento');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error al crear el evento', 'error');
+      }
     }
+
+    async function submitNoticia(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      
+      try {
+        // Aquí iría la conexión con el backend
+        const response = await fetch('/api/v1/admin/crear-noticia', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          showNotification('Noticia creada exitosamente', 'success');
+          event.target.reset();
+          document.getElementById('file-name-noticia').textContent = 'Seleccionar imagen';
+          document.getElementById('file-name-noticia').style.color = '#718096';
+          document.getElementById('file-name-noticia').style.fontWeight = '500';
+        } else {
+          throw new Error('Error al crear noticia');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error al crear la noticia', 'error');
+      }
+    }
+
+    // Validación de fecha mínima (hoy)
+    document.getElementById('fecha-evento').min = new Date().toISOString().split('T')[0];
   </script>
 </body>
 </html>

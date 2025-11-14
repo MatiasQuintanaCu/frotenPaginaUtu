@@ -1,8 +1,11 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+session_start(); // ← Agregar al inicio
+
+header('Access-Control-Allow-Origin: http://tu-dominio.com'); // Cambiar * por tu dominio específico
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+header('Access-Control-Allow-Credentials: true'); // ← IMPORTANTE para sesiones
 
 require_once __DIR__ . '/../config/database.php';
 
@@ -13,6 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
+    // Verificar que el usuario esté autenticado
+    if (!isset($_SESSION['user_id']) && !isset($_SESSION['id_usuario'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
+        exit;
+    }
+
     $database = new Database();
     $conn = $database->getConnection();
     
@@ -20,21 +30,18 @@ try {
         throw new Exception('Error de conexión a la base de datos');
     }
 
-    // Obtener datos JSON
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
 
-    // Validar datos
     if (empty($data['nombre']) || empty($data['descripcion']) || empty($data['fecha_evento'])) {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios']);
         exit;
     }
 
-    // ID del creador (por ahora hardcodeado, luego lo tomarás de la sesión)
-    $id_creador = 1; // ← Cambiar por el ID del usuario autenticado
+    // Obtener ID del usuario autenticado desde la sesión
+    $id_creador = $_SESSION['user_id'] ?? $_SESSION['id_usuario'];
 
-    // Insertar evento
     $query = "INSERT INTO eventos (nombre, descripcion, fecha_evento, id_creador) 
               VALUES (:nombre, :descripcion, :fecha_evento, :id_creador)";
     

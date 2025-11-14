@@ -3,279 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - UTU</title>
+    <title>Iniciar Sesión - UTU Trinidad Flores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0A2540',
+                        'accent': '#00A67E',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            backgroundcolor: #f0f4f8;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+        .login-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
         }
 
-        .login-container:hover {
-            transform: translateY(-5px);
+        .input-field {
+            transition: all 0.2s ease;
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h1 {
-            color: #333;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            color: #555;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: color 0.3s ease;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .input-field:focus {
             transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(0, 166, 126, 0.1);
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #666;
-            font-size: 16px;
-            padding: 4px;
-        }
-
-        .password-toggle:hover {
-            color: #667eea;
-        }
-
-        .login-button {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .login-button:active {
-            transform: translateY(0);
-        }
-
-        .login-button:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .register-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .register-link a:hover {
-            color: #764ba2;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .success-message {
-            color: #27ae60;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .form-group.error input {
-            border-color: #e74c3c;
-        }
-
-        .form-group.success input {
-            border-color: #27ae60;
-        }
-
-        .form-group.error .error-message {
-            display: block;
-        }
-
-        #message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-        }
-
-        .message-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block !important;
-        }
-
-        .message-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block !important;
-        }
-
-        .message-loading {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-            display: block !important;
-        }
-
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 20px;
-                margin: 10px;
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
-
-            .login-header h1 {
-                font-size: 24px;
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            animation: slideIn 0.3s ease;
+        }
+
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>Iniciar Sesión</h1>
-            <p>Bienvenido de vuelta</p>
-        </div>
-        
-        <form id="loginForm" novalidate>
-            <div class="form-group">
-                <label for="correo">Correo Electrónico</label>
-                <input type="email" id="correo" name="correo" required placeholder="tu@correo.com">
-                <div class="error-message">Ingresa un email válido</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="contrasena">Contraseña</label>
-                <div style="position: relative;">
-                    <input type="password" id="contrasena" name="contrasena" required placeholder="Tu contraseña">
-                    <button type="button" class="password-toggle" onclick="togglePassword()">
-                        👁️
-                    </button>
-                </div>
-                <div class="error-message">La contraseña es requerida</div>
-            </div>
-            
-            <button type="submit" class="login-button" id="loginBtn">
-                Ingresar
-            </button>
-        </form>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
 
-        <div id="message"></div>
-        
-        <div class="register-link">
-            ¿No tienes cuenta? <a href="register">Regístrate aquí</a>
+    <div class="w-full max-w-md">
+        <!-- Logo Section -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
+                <i class="fas fa-graduation-cap text-accent text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Bienvenido</h1>
+            <p class="text-gray-600">UTU Trinidad Flores</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+            <form id="loginForm" class="space-y-6">
+                <!-- Email Field -->
+                <div>
+                    <label for="correo" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Correo Electrónico
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            id="correo" 
+                            name="correo" 
+                            class="input-field w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-accent"
+                            placeholder="tu@correo.com"
+                            required
+                        >
+                    </div>
+                    <p class="text-red-500 text-xs mt-1 hidden" id="emailError">Ingresa un email válido</p>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="contrasena" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="password" 
+                            id="contrasena" 
+                            name="contrasena" 
+                            class="input-field w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-accent"
+                            placeholder="Tu contraseña"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword()"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-accent transition-colors"
+                        >
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <p class="text-red-500 text-xs mt-1 hidden" id="passwordError">La contraseña es requerida</p>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    id="loginBtn"
+                    class="w-full bg-accent hover:bg-accent/90 text-white font-semibold py-3 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5"
+                >
+                    <span>Iniciar Sesión</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    ¿No tienes cuenta? 
+                    <a href="register" class="text-accent font-semibold hover:text-accent/80 transition-colors">
+                        Regístrate aquí
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-sm text-gray-500">
+            <p>&copy; 2025 UTU Trinidad Flores</p>
         </div>
     </div>
 
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('contrasena');
-            const toggleButton = passwordInput.nextElementSibling;
+            const toggleIcon = document.getElementById('toggleIcon');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleButton.textContent = '🙈';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
             } else {
                 passwordInput.type = 'password';
-                toggleButton.textContent = '👁️';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
             }
         }
 
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = message;
-            messageDiv.className = type;
+        function showNotification(message, type) {
+            // Remove existing notifications
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-6 right-6 z-50 max-w-md px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+                type === 'success' ? 'bg-white border border-accent text-gray-900' : 
+                type === 'error' ? 'bg-white border border-red-500 text-gray-900' : 
+                'bg-white border border-blue-500 text-gray-900'
+            }`;
+            
+            const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+            const iconColor = type === 'success' ? 'bg-accent' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            
+            notification.innerHTML = `
+                <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${iconColor}">
+                    <i class="fas fa-${icon} text-white text-xs"></i>
+                </div>
+                <span class="font-medium">${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
         }
 
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
+        }
+
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                button.innerHTML = '<div class="spinner"></div><span>Iniciando sesión...</span>';
+            } else {
+                button.disabled = false;
+                button.innerHTML = '<span>Iniciar Sesión</span><i class="fas fa-arrow-right"></i>';
+            }
         }
 
         // Verificar si ya está logueado
@@ -288,49 +244,65 @@
                 
                 const data = await res.json();
                 if (data.success) {
-                    // Si ya hay sesión, redirigir al home
                     window.location.href = "home";
                 }
             } catch (error) {
-                console.log("No hay sesión activa o error al verificar:", error);
+                console.log("No hay sesión activa");
             }
         }
 
-        // Validación del formulario
+        // Form validation
+        document.getElementById('correo').addEventListener('input', function() {
+            const emailError = document.getElementById('emailError');
+            if (this.value && !validateEmail(this.value)) {
+                emailError.classList.remove('hidden');
+                this.classList.add('border-red-500');
+            } else {
+                emailError.classList.add('hidden');
+                this.classList.remove('border-red-500');
+            }
+        });
+
+        document.getElementById('contrasena').addEventListener('input', function() {
+            const passwordError = document.getElementById('passwordError');
+            if (!this.value) {
+                passwordError.classList.remove('hidden');
+                this.classList.add('border-red-500');
+            } else {
+                passwordError.classList.add('hidden');
+                this.classList.remove('border-red-500');
+            }
+        });
+
+        // Form submit
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Limpiar errores previos
-            document.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('error');
-            });
-            
-            let hasErrors = false;
-            
-            // Validaciones
             const correo = document.getElementById('correo');
             const contrasena = document.getElementById('contrasena');
+            let hasErrors = false;
             
+            // Validate
             if (!correo.value.trim() || !validateEmail(correo.value)) {
-                correo.parentElement.classList.add('error');
+                document.getElementById('emailError').classList.remove('hidden');
+                correo.classList.add('border-red-500');
                 hasErrors = true;
             }
             
             if (!contrasena.value) {
-                contrasena.parentElement.parentElement.classList.add('error');
+                document.getElementById('passwordError').classList.remove('hidden');
+                contrasena.classList.add('border-red-500');
                 hasErrors = true;
             }
             
             if (hasErrors) {
-                showMessage('❌ Por favor, corrige los errores en el formulario', 'message-error');
+                showNotification('Por favor, corrige los errores en el formulario', 'error');
                 return;
             }
 
-            // Deshabilitar botón durante el envío
             const button = document.getElementById('loginBtn');
-            button.textContent = 'Iniciando sesión...';
-            button.disabled = true;
-            showMessage('⏳ Verificando credenciales...', 'message-loading');
+            setButtonLoading(button, true);
+            showNotification('Verificando credenciales...', 'info');
 
             try {
                 const data = {
@@ -338,64 +310,40 @@
                     password: contrasena.value
                 };
 
-                // ✅ RUTA CORREGIDA: usa el router sin .php
                 const res = await fetch("/api/v1/user/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    credentials: "include", // Importante para enviar cookies de sesión
-                    body: JSON.stringify(data) // ✅ NO OLVIDAR ESTA LÍNEA
+                    credentials: "include",
+                    body: JSON.stringify(data)
                 });
 
                 const responseData = await res.json();
                 
                 if (responseData.success) {
-                    showMessage(`✅ ${responseData.message}`, 'message-success');
+                    showNotification(responseData.message || 'Inicio de sesión exitoso', 'success');
                     
-                    // Guardar información del usuario en localStorage (opcional)
                     if (responseData.data && responseData.data.user) {
                         localStorage.setItem('user', JSON.stringify(responseData.data.user));
                         localStorage.setItem('user_name', responseData.data.user.nombre);
                     }
                     
-                    // Redirigir después de login exitoso
                     setTimeout(() => {
                         const redirectUrl = (responseData.data && responseData.data.redirect) || 'home';
                         window.location.href = redirectUrl;
                     }, 1500);
                 } else {
-                    showMessage(`❌ ${responseData.message}`, 'message-error');
+                    showNotification(responseData.message || 'Error al iniciar sesión', 'error');
                 }
                 
             } catch (err) {
-                console.error("Error de conexión:", err);
-                showMessage("❌ Error al conectar con el servidor. Verifica tu conexión.", "message-error");
+                console.error("Error:", err);
+                showNotification("Error al conectar con el servidor", "error");
             } finally {
-                // Rehabilitar botón
-                button.disabled = false;
-                button.textContent = 'Ingresar';
+                setButtonLoading(button, false);
             }
         });
 
-        // Validación en tiempo real
-        document.getElementById('correo').addEventListener('input', function() {
-            if (validateEmail(this.value)) {
-                this.parentElement.classList.remove('error');
-            } else if (this.value.length > 0) {
-                this.parentElement.classList.add('error');
-            } else {
-                this.parentElement.classList.remove('error');
-            }
-        });
-
-        document.getElementById('contrasena').addEventListener('input', function() {
-            if (this.value.length > 0) {
-                this.parentElement.parentElement.classList.remove('error');
-            } else {
-                this.parentElement.parentElement.classList.add('error');
-            }
-        });
-
-        // Verificar sesión al cargar la página
+        // Check session on load
         document.addEventListener('DOMContentLoaded', checkExistingSession);
     </script>
 </body>

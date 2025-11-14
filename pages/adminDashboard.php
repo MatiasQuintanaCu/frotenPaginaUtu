@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+// Validar que el usuario esté logueado y sea ADMIN
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['user_rol'] !== 'ADMIN') {
+    header('Location: /login');
+    exit;
+}
+
+$userName = $_SESSION['user_name'];
+$userRol = $_SESSION['user_rol'];
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -423,6 +435,20 @@
       </div>
 
     </div>
+
+    <!-- Información Adicional -->
+    <div class="mt-12 text-center">
+      <div class="bg-white rounded-lg p-6 shadow-sm border">
+        <h3 class="text-lg font-semibold text-utu-blue mb-2">
+          <i class="fas fa-info-circle mr-2"></i>
+          Información Importante
+        </h3>
+        <p class="text-gray-600 text-sm">
+          Los eventos y noticias publicados aquí serán visibles para todos los usuarios en la página principal.
+          Asegúrese de verificar la información antes de publicar.
+        </p>
+      </div>
+    </div>
   </main>
 
   <!-- Footer -->
@@ -441,6 +467,10 @@
 
   <script>
     let imagenBase64 = null;
+
+    function goToHome() {
+      window.location.href = '/';
+    }
 
     function handleFileSelect(event) {
       const file = event.target.files[0];
@@ -605,6 +635,9 @@
         setButtonLoading(button, false);
       }
     });
+
+    // Establecer fecha mínima como hoy
+    document.getElementById('fecha-evento').min = new Date().toISOString().split('T')[0];
   </script>
 </body>
 </html>

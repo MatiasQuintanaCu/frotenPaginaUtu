@@ -50,10 +50,16 @@ try {
     $contenido = $data['contenido'];
     $imagenBase64 = $data['imagen'];
 
-    // Validar formato base64
-    if (!preg_match('/^data:image\/(jpeg|jpg|png|gif|webp);base64,/', $imagenBase64)) {
+    // Extraer solo el base64 puro (sin el prefijo data:image/...)
+    if (preg_match('/^data:image\/(jpeg|jpg|png|gif|webp);base64,/', $imagenBase64)) {
+        // Si viene con prefijo, extraer solo el base64
+        $imagenBase64 = preg_replace('/^data:image\/(jpeg|jpg|png|gif|webp);base64,/', '', $imagenBase64);
+    }
+
+    // Validar que sea un string base64 válido
+    if (!base64_decode($imagenBase64, true)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Formato de imagen inválido']);
+        echo json_encode(['success' => false, 'message' => 'Formato base64 de imagen inválido']);
         exit;
     }
 

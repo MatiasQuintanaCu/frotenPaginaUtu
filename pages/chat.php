@@ -30,12 +30,78 @@ $userRol = $_SESSION['user_rol'];
                     colors: {
                         'utu-blue': '#003366',
                         'utu-blue-light': '#004d99',
+                        'utu-blue-dark': '#002244',
+                        'utu-gray': '#4a5568',
+                        'utu-gray-light': '#718096',
+                        'utu-green': '#2d7744',
+                        'utu-red': '#c53030',
+                    },
+                    fontFamily: {
+                        'sans': ['Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
+        .nav-institutional {
+            background: #003366;
+            border-bottom: 2px solid #2d7744;
+        }
+        
+        .btn-institutional {
+            background-color: #003366;
+            color: white;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-institutional:hover {
+            background-color: #002244;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: #2d7744;
+            color: white;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #236335;
+        }
+        
+        .user-badge {
+            background: #2d7744;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .footer-institutional {
+            background: #002244;
+        }
+        
+        .institutional-logo {
+            border: 2px solid #2d7744;
+        }
+        
+        .accent-color {
+            color: #2d7744;
+        }
+        
+        .bg-accent {
+            background-color: #2d7744;
+        }
+
         @keyframes slideInRight {
             from { opacity: 0; transform: translateX(20px); }
             to { opacity: 1; transform: translateX(0); }
@@ -52,16 +118,11 @@ $userRol = $_SESSION['user_rol'];
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         
         .message-sent { animation: slideInRight 0.3s ease; }
         .message-received { animation: slideInLeft 0.3s ease; }
         .pulse-notification { animation: pulse 0.6s ease-in-out; }
         .fade-in { animation: fadeIn 0.3s ease-in; }
-        .slide-down { animation: slideDown 0.3s ease; }
         
         .smooth-scroll {
             scroll-behavior: smooth;
@@ -75,7 +136,7 @@ $userRol = $_SESSION['user_rol'];
             display: none;
         }
 
-        /* EMOJI PICKER FIXED */
+        /* EMOJI PICKER */
         .emoji-picker {
             position: absolute;
             bottom: 100%;
@@ -86,10 +147,10 @@ $userRol = $_SESSION['user_rol'];
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             width: 320px;
-            max-width: 90vw; /* Limitar ancho máximo en móviles */
+            max-width: 90vw;
             max-height: 350px;
             overflow-y: auto;
-            overflow-x: hidden; /* Prevenir scroll horizontal */
+            overflow-x: hidden;
             z-index: 1000;
         }
 
@@ -110,7 +171,7 @@ $userRol = $_SESSION['user_rol'];
             background: #f9fafb;
             border-bottom: 1px solid #e5e7eb;
             position: sticky;
-            top: 57px; /* Altura del header */
+            top: 57px;
             z-index: 5;
         }
 
@@ -133,9 +194,9 @@ $userRol = $_SESSION['user_rol'];
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 0; /* Prevenir que se expandan */
-            width: 100%; /* Ocupar todo el espacio disponible */
-            aspect-ratio: 1; /* Mantener proporción cuadrada */
+            min-width: 0;
+            width: 100%;
+            aspect-ratio: 1;
         }
 
         .emoji-item:hover {
@@ -143,7 +204,6 @@ $userRol = $_SESSION['user_rol'];
             transform: scale(1.2);
         }
 
-        /* Scrollbar personalizada para el emoji picker */
         .emoji-picker::-webkit-scrollbar {
             width: 6px;
         }
@@ -162,14 +222,14 @@ $userRol = $_SESSION['user_rol'];
             background: #a8a8a8;
         }
 
-        /* MAIN CONTAINER - FULL WIDTH EN DESKTOP */
+        /* MAIN CONTAINER */
         .main-container {
-            height: calc(100vh - 120px); /* Altura completa menos el header */
+            height: calc(100vh - 120px);
         }
 
         @media (min-width: 1024px) {
             .main-container {
-                max-width: 100% !important; /* Forzar full width */
+                max-width: 100% !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
                 padding-left: 0 !important;
@@ -177,9 +237,9 @@ $userRol = $_SESSION['user_rol'];
             }
             
             .chat-wrapper {
-                border-radius: 0 !important; /* Sin bordes redondeados */
+                border-radius: 0 !important;
                 height: 100% !important;
-                box-shadow: none !important; /* Sin sombra para full width */
+                box-shadow: none !important;
             }
         }
 
@@ -197,7 +257,6 @@ $userRol = $_SESSION['user_rol'];
                 transition: transform 0.3s ease;
             }
 
-            /* Emoji picker responsive */
             .emoji-picker {
                 width: 300px;
                 right: 0;
@@ -205,7 +264,7 @@ $userRol = $_SESSION['user_rol'];
             }
 
             .emoji-grid {
-                grid-template-columns: repeat(7, 1fr); /* Una columna menos en móviles */
+                grid-template-columns: repeat(7, 1fr);
             }
 
             .emoji-item {
@@ -230,7 +289,7 @@ $userRol = $_SESSION['user_rol'];
             }
 
             .emoji-grid {
-                grid-template-columns: repeat(6, 1fr); /* Menos columnas en móviles pequeños */
+                grid-template-columns: repeat(6, 1fr);
             }
 
             .emoji-item {
@@ -243,35 +302,71 @@ $userRol = $_SESSION['user_rol'];
                 height: calc(100vh - 100px);
             }
         }
+
+        .chat-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .chat-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
-    <!-- Header -->
-    <nav class="bg-gradient-to-r from-utu-blue to-utu-blue-light text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-4">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans">
+    <!-- Header Institucional -->
+    <nav class="nav-institutional text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+                
+                <!-- Logo y Marca -->
                 <div class="flex items-center gap-4">
-                    <button id="back-button" class="px-3 py-2 rounded-lg transition-all bg-white bg-opacity-10 hover:bg-opacity-20 border-0">
+                    <button id="back-button" class="btn-institutional font-semibold px-3 py-2 flex items-center gap-2">
                         <i class="fas fa-arrow-left"></i>
+                        <span class="hidden sm:inline">Volver</span>
                     </button>
-                    <button id="toggle-chat-button" class="lg:hidden px-3 py-2 rounded-lg transition-all bg-white bg-opacity-10 hover:bg-opacity-20 border-0">
+                    <button id="toggle-chat-button" class="lg:hidden btn-institutional font-semibold px-3 py-2 flex items-center gap-2">
                         <i class="fas fa-comments"></i>
+                        <span>Chats</span>
                     </button>
-                    <div>
-                        <h1 class="text-xl font-bold m-0">Sistema de Mensajería</h1>
-                        <p class="text-sm opacity-80 m-0 hidden lg:block">Comunícate con docentes y administradores</p>
+                    <div class="flex items-center gap-4">
+                        <img id="LogoUtu" 
+                             src="./assets/img/logo.webp" 
+                             alt="Logo UTU"
+                             class="w-12 h-12 institutional-logo rounded-lg shadow-md">
+                        <div class="flex flex-col text-center lg:text-left">
+                            <span class="text-lg sm:text-xl font-bold">
+                                UTU - Trinidad Flores
+                            </span>
+                            <span class="text-xs text-gray-300 font-medium">
+                                Sistema de Mensajería
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <span class="bg-white bg-opacity-20 px-3 py-2 rounded-full text-sm">
-                        <?php echo htmlspecialchars($userName); ?> (<?php echo $userRol; ?>)
-                    </span>
+                
+                <!-- Información del Usuario -->
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 bg-white bg-opacity-10 rounded-lg px-3 py-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white font-bold text-sm">
+                                <?php echo strtoupper(substr($userName, 0, 1)); ?>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-white font-semibold text-sm"><?php echo htmlspecialchars(explode(' ', $userName)[0]); ?></span>
+                                <span class="user-badge text-xs"><?php echo $userRol; ?></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content - FULL WIDTH EN DESKTOP -->
+    <!-- Main Content -->
     <div class="main-container w-full px-0 lg:px-0">
         <div class="chat-wrapper bg-white h-full lg:rounded-none rounded-xl shadow-xl lg:shadow-none overflow-hidden">
             <div class="flex h-full relative">
@@ -280,15 +375,15 @@ $userRol = $_SESSION['user_rol'];
                     <!-- Buscador y nuevo chat -->
                     <div class="p-4 border-b border-gray-200 bg-white">
                         <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-lg font-semibold text-gray-800 m-0">Conversaciones</h2>
+                            <h2 class="text-lg font-semibold text-utu-blue m-0">Conversaciones</h2>
                             <div id="global-notification" class="hidden">
-                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full pulse-notification">
+                                <span class="bg-utu-red text-white text-xs font-bold px-2 py-1 rounded-full pulse-notification">
                                     Nuevos mensajes
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Buscador mejorado -->
+                        <!-- Buscador -->
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
@@ -297,7 +392,7 @@ $userRol = $_SESSION['user_rol'];
                                 type="text" 
                                 id="userSearch" 
                                 placeholder="Buscar o iniciar nuevo chat..." 
-                                class="w-full border border-gray-300 rounded-lg pl-10 pr-10 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                class="w-full border border-gray-300 rounded-lg pl-10 pr-10 py-2.5 text-sm outline-none focus:ring-2 focus:ring-utu-blue focus:border-utu-blue transition-all"
                             >
                             <button 
                                 id="clearSearch"
@@ -325,7 +420,7 @@ $userRol = $_SESSION['user_rol'];
                     </div>
                 </div>
 
-                <!-- Área de chat (derecha) - FULL WIDTH -->
+                <!-- Área de chat (derecha) -->
                 <div class="chat-panel w-full lg:w-2/3 flex flex-col absolute lg:relative inset-0 z-0 lg:z-0 transform lg:transform-none translate-x-full lg:translate-x-0">
                     <!-- Header del chat -->
                     <div id="chat-header" class="p-4 border-b border-gray-200 bg-white">
@@ -353,7 +448,7 @@ $userRol = $_SESSION['user_rol'];
                                     id="message-input" 
                                     placeholder="Escribe tu mensaje..." 
                                     maxlength="500"
-                                    class="flex-1 border border-gray-300 rounded-lg px-4 py-3 outline-none text-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    class="flex-1 border border-gray-300 rounded-lg px-4 py-3 outline-none text-sm transition-all focus:border-utu-blue focus:ring-2 focus:ring-utu-blue/20"
                                 >
                                 <button 
                                     id="emoji-button"
@@ -364,20 +459,20 @@ $userRol = $_SESSION['user_rol'];
                                 </button>
                                 <button 
                                     id="send-button"
-                                    class="bg-gradient-to-r from-utu-blue to-utu-blue-light text-white px-6 py-3 rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg border-0 cursor-pointer"
+                                    class="bg-utu-blue text-white px-6 py-3 rounded-lg transition-all hover:bg-utu-blue-dark hover:shadow-lg border-0 cursor-pointer"
                                 >
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             </div>
                             
-                            <!-- Emoji Picker FIXED -->
+                            <!-- Emoji Picker -->
                             <div id="emoji-picker" class="emoji-picker hidden">
                                 <div class="emoji-picker-header">
                                     <input 
                                         type="text" 
                                         id="emoji-search" 
                                         placeholder="Buscar emoji..." 
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500"
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-utu-blue"
                                     >
                                 </div>
                                 <div id="emoji-content" class="w-full"></div>
@@ -392,6 +487,15 @@ $userRol = $_SESSION['user_rol'];
         </div>
     </div>
 
+    <!-- Footer Institucional -->
+    <footer class="footer-institutional text-gray-300 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="text-center">
+                <p class="text-sm opacity-90">&copy; 2025 Escuela Técnica Trinidad Flores (UTU). Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         /* Estado */
         let currentReceiver = null;
@@ -401,7 +505,7 @@ $userRol = $_SESSION['user_rol'];
         let unreadMessages = {};
         let lastMessages = [];
         let isFirstLoad = true;
-        let allUsers = []; // Cache de todos los usuarios
+        let allUsers = [];
         let emojiPickerOpen = false;
         let isMobileView = window.innerWidth < 1024;
 
@@ -421,7 +525,6 @@ $userRol = $_SESSION['user_rol'];
         /* Navegación */
         function goBack() { 
             if (isMobileView && currentReceiver) {
-                // Volver a la lista de conversaciones en móvil
                 showConversationsList();
             } else {
                 window.location.href = 'home'; 
@@ -443,7 +546,7 @@ $userRol = $_SESSION['user_rol'];
                 if (count > 0) {
                     if (!badge) {
                         const newBadge = document.createElement('div');
-                        newBadge.className = 'unread-badge bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full ml-auto';
+                        newBadge.className = 'unread-badge bg-utu-red text-white text-xs font-bold px-2 py-1 rounded-full ml-auto';
                         newBadge.textContent = count > 99 ? '99+' : count;
                         item.querySelector('.flex-1').appendChild(newBadge);
                     } else {
@@ -483,7 +586,7 @@ $userRol = $_SESSION['user_rol'];
                 const data = await response.json();
 
                 if (data.status === 'success' && data.data && data.data.length > 0) {
-                    allUsers = data.data; // Guardar en cache
+                    allUsers = data.data;
                 } else {
                     allUsers = [];
                 }
@@ -502,7 +605,6 @@ $userRol = $_SESSION['user_rol'];
             const searchResultsList = document.getElementById('searchResultsList');
             const clearBtn = document.getElementById('clearSearch');
 
-            // Mostrar/ocultar botón de limpiar
             if (searchTerm) {
                 clearBtn.classList.remove('hidden');
             } else {
@@ -516,7 +618,6 @@ $userRol = $_SESSION['user_rol'];
                 return;
             }
 
-            // Filtrar usuarios
             const filtered = allUsers.filter(user => 
                 user.nombre.toLowerCase().includes(searchTerm) ||
                 user.rol.toLowerCase().includes(searchTerm)
@@ -533,7 +634,6 @@ $userRol = $_SESSION['user_rol'];
                 return;
             }
 
-            // Mostrar resultados
             searchResultsList.innerHTML = '';
             filtered.forEach(user => {
                 const item = document.createElement('div');
@@ -543,7 +643,7 @@ $userRol = $_SESSION['user_rol'];
                 flex.className = 'flex items-center gap-3';
 
                 const avatar = document.createElement('div');
-                avatar.className = 'w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0';
+                avatar.className = 'w-10 h-10 bg-gradient-to-br from-utu-blue to-utu-blue-light rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0';
                 avatar.textContent = user.nombre.charAt(0).toUpperCase();
 
                 const info = document.createElement('div');
@@ -556,7 +656,7 @@ $userRol = $_SESSION['user_rol'];
                 const role = document.createElement('div');
                 role.className = 'text-xs text-gray-500 flex items-center gap-1';
                 const dot = document.createElement('span');
-                dot.className = `inline-block w-1.5 h-1.5 rounded-full ${user.rol === 'ADMIN' ? 'bg-red-500' : 'bg-green-500'}`;
+                dot.className = `inline-block w-1.5 h-1.5 rounded-full ${user.rol === 'ADMIN' ? 'bg-utu-red' : 'bg-utu-green'}`;
                 role.appendChild(dot);
                 role.appendChild(document.createTextNode(user.rol));
 
@@ -589,7 +689,7 @@ $userRol = $_SESSION['user_rol'];
             document.getElementById('clearSearch').classList.add('hidden');
         }
 
-        /* Cargar conversaciones (solo usuarios con mensajes) */
+        /* Cargar conversaciones */
         async function loadConversations() {
             const usersList = document.getElementById('users-list');
             try {
@@ -665,7 +765,7 @@ $userRol = $_SESSION['user_rol'];
             } catch (error) {
                 console.error('Error al cargar conversaciones:', error);
                 usersList.innerHTML = `
-                    <div class="text-center py-8 text-red-600">
+                    <div class="text-center py-8 text-utu-red">
                         <i class="fas fa-exclamation-triangle text-2xl mb-3"></i>
                         <p class="m-0 mb-2 font-semibold">Error al cargar conversaciones</p>
                     </div>
@@ -673,7 +773,7 @@ $userRol = $_SESSION['user_rol'];
             }
         }
 
-        /* Verificar nuevos mensajes (polling) */
+        /* Verificar nuevos mensajes */
         async function checkNewMessages() {
             if (!currentReceiver) return;
 
@@ -728,31 +828,30 @@ $userRol = $_SESSION['user_rol'];
             }
         }
 
-        /* Seleccionar usuario (desde lista o búsqueda) */
+        /* Seleccionar usuario */
         function selectUser(userId, userName, userRol) {
             currentReceiver = userId;
             currentReceiverName = userName;
 
             markMessagesAsRead(userId);
 
-            // Resaltar usuario seleccionado en la lista
             document.querySelectorAll('.user-item').forEach(item => {
-                item.classList.remove('bg-blue-50', 'border-l-4', 'border-blue-500');
+                item.classList.remove('bg-blue-50', 'border-l-4', 'border-utu-blue');
             });
             const selectedItem = document.querySelector(`.user-item[data-user-id="${userId}"]`);
             if (selectedItem) {
-                selectedItem.classList.add('bg-blue-50', 'border-l-4', 'border-blue-500');
+                selectedItem.classList.add('bg-blue-50', 'border-l-4', 'border-utu-blue');
             }
 
             document.getElementById('chat-header').innerHTML = `
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    <div class="w-12 h-12 bg-gradient-to-br from-utu-green to-utu-green/90 rounded-full flex items-center justify-center text-white font-semibold">
                         ${escapeHtml(userName).charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <div class="font-semibold text-gray-800 text-lg">${escapeHtml(userName)}</div>
+                        <div class="font-semibold text-utu-blue text-lg">${escapeHtml(userName)}</div>
                         <div class="text-sm text-gray-500 flex items-center gap-1">
-                            <span class="inline-block w-1.5 h-1.5 rounded-full ${userRol === 'ADMIN' ? 'bg-red-500' : 'bg-green-500'}"></span>
+                            <span class="inline-block w-1.5 h-1.5 rounded-full ${userRol === 'ADMIN' ? 'bg-utu-red' : 'bg-utu-green'}"></span>
                             ${userRol}
                         </div>
                     </div>
@@ -765,7 +864,6 @@ $userRol = $_SESSION['user_rol'];
             setupIntervals();
             document.getElementById('message-input').focus();
             
-            // En móvil, cambiar a vista de chat
             if (isMobileView) {
                 showChatView();
             }
@@ -774,8 +872,7 @@ $userRol = $_SESSION['user_rol'];
         /* Funciones para manejar la vista móvil */
         function showChatView() {
             document.body.classList.add('mobile-chat-active');
-            document.getElementById('back-button').innerHTML = '<i class="fas fa-arrow-left"></i>';
-            document.getElementById('toggle-chat-button').innerHTML = '<i class="fas fa-comments"></i>';
+            document.getElementById('back-button').innerHTML = '<i class="fas fa-arrow-left"></i><span class="hidden sm:inline"> Volver</span>';
         }
 
         function showConversationsList() {
@@ -800,8 +897,6 @@ $userRol = $_SESSION['user_rol'];
         function toggleChatView() {
             if (currentReceiver) {
                 showConversationsList();
-            } else {
-                // Si no hay conversación activa, no hacer nada
             }
         }
 
@@ -849,7 +944,7 @@ $userRol = $_SESSION['user_rol'];
             if (messages && messages.length > 0) {
                 container.innerHTML = messages.map(msg => `
                     <div class="flex ${msg.es_mio ? 'justify-end' : 'justify-start'} mb-3 fade-in">
-                        <div class="${msg.es_mio ? 'message-sent bg-gradient-to-r from-purple-500 to-purple-600 text-white' : 'message-received bg-gray-200 text-gray-800'} max-w-[85%] lg:max-w-[70%] px-4 py-3 rounded-2xl ${msg.es_mio ? 'rounded-br-md' : 'rounded-bl-md'} shadow-sm">
+                        <div class="${msg.es_mio ? 'message-sent bg-gradient-to-r from-utu-blue to-utu-blue-light text-white' : 'message-received bg-gray-200 text-gray-800'} max-w-[85%] lg:max-w-[70%] px-4 py-3 rounded-2xl ${msg.es_mio ? 'rounded-br-md' : 'rounded-bl-md'} shadow-sm">
                             ${!msg.es_mio ? `<div class="text-xs font-semibold mb-1 opacity-80">${escapeHtml(msg.nombre_emisor)}</div>` : ''}
                             <div class="text-sm leading-relaxed break-words">${escapeHtml(msg.contenido)}</div>
                             <div class="text-xs opacity-70 mt-1 ${msg.es_mio ? 'text-right' : 'text-left'}">
@@ -873,7 +968,7 @@ $userRol = $_SESSION['user_rol'];
         function showError(message) {
             const container = document.getElementById('messages-container');
             container.innerHTML = `
-                <div class="text-center text-red-600 py-12">
+                <div class="text-center text-utu-red py-12">
                     <i class="fas fa-exclamation-circle text-2xl mb-4"></i>
                     <p class="text-base mb-2">${message}</p>
                     <button onclick="loadMessages()" class="mt-4 bg-utu-blue text-white px-4 py-2 rounded text-sm border-0 cursor-pointer">
@@ -933,7 +1028,7 @@ $userRol = $_SESSION['user_rol'];
             const count = document.getElementById('char-count');
             const charCount = input.value.length;
             count.textContent = charCount;
-            if (charCount > 450) count.className = 'text-red-600';
+            if (charCount > 450) count.className = 'text-utu-red';
             else if (charCount > 400) count.className = 'text-orange-500';
             else count.className = 'text-gray-500';
         }
@@ -944,7 +1039,7 @@ $userRol = $_SESSION['user_rol'];
             }
         }
 
-        /* Emoji Picker FIXED */
+        /* Emoji Picker */
         function initEmojiPicker() {
             const emojiContent = document.getElementById('emoji-content');
             let html = '';
@@ -960,7 +1055,6 @@ $userRol = $_SESSION['user_rol'];
             
             emojiContent.innerHTML = html;
             
-            // Agregar eventos a cada emoji
             document.querySelectorAll('.emoji-item').forEach(item => {
                 item.addEventListener('click', function() {
                     insertEmoji(this.getAttribute('data-emoji'));
@@ -977,12 +1071,11 @@ $userRol = $_SESSION['user_rol'];
             input.value = textBefore + emoji + textAfter;
             input.focus();
             
-            // Colocar cursor después del emoji
             const newPos = cursorPos + emoji.length;
             input.setSelectionRange(newPos, newPos);
             
             updateCharCount();
-            toggleEmojiPicker(); // Cerrar el picker después de seleccionar
+            toggleEmojiPicker();
         }
 
         function toggleEmojiPicker() {
@@ -991,7 +1084,6 @@ $userRol = $_SESSION['user_rol'];
             
             if (emojiPickerOpen) {
                 emojiPicker.classList.remove('hidden');
-                // Limpiar búsqueda cuando se abre
                 document.getElementById('emoji-search').value = '';
                 filterEmojis();
             } else {
@@ -1006,18 +1098,15 @@ $userRol = $_SESSION['user_rol'];
             const grids = document.querySelectorAll('.emoji-grid');
             
             if (!searchTerm) {
-                // Mostrar todo cuando no hay búsqueda
                 emojiItems.forEach(item => item.style.display = '');
                 categories.forEach(cat => cat.style.display = '');
                 grids.forEach(grid => grid.style.display = '');
                 return;
             }
             
-            // Ocultar todo primero
             categories.forEach(cat => cat.style.display = 'none');
             grids.forEach(grid => grid.style.display = 'none');
             
-            // Mostrar solo emojis que coincidan
             let hasResults = false;
             emojiItems.forEach(item => {
                 const emoji = item.getAttribute('data-emoji');
@@ -1034,7 +1123,6 @@ $userRol = $_SESSION['user_rol'];
                 }
             });
             
-            // Si no hay resultados, mostrar mensaje
             if (!hasResults) {
                 const emojiContent = document.getElementById('emoji-content');
                 emojiContent.innerHTML = `
@@ -1046,10 +1134,9 @@ $userRol = $_SESSION['user_rol'];
             }
         }
 
-        /* Eventos de input / envío */
+        /* Eventos */
         document.getElementById('userSearch').addEventListener('input', searchUsers);
         
-        // Cerrar resultados al hacer click fuera
         document.addEventListener('click', function(e) {
             const searchResults = document.getElementById('searchResults');
             const userSearch = document.getElementById('userSearch');
@@ -1060,20 +1147,17 @@ $userRol = $_SESSION['user_rol'];
                 searchResults.classList.add('hidden');
             }
             
-            // Cerrar emoji picker si se hace click fuera
             if (!emojiPicker.contains(e.target) && e.target !== emojiButton && !emojiButton.contains(e.target)) {
                 emojiPicker.classList.add('hidden');
                 emojiPickerOpen = false;
             }
         });
 
-        // Evento del botón de emoji
         document.getElementById('emoji-button').addEventListener('click', function(e) {
             e.stopPropagation();
             toggleEmojiPicker();
         });
 
-        // Búsqueda de emojis
         document.getElementById('emoji-search').addEventListener('input', filterEmojis);
 
         document.getElementById('message-input').addEventListener('input', updateCharCount);
@@ -1085,11 +1169,9 @@ $userRol = $_SESSION['user_rol'];
         });
         document.getElementById('send-button').addEventListener('click', sendMessage);
 
-        // Eventos para navegación móvil
         document.getElementById('back-button').addEventListener('click', goBack);
         document.getElementById('toggle-chat-button').addEventListener('click', toggleChatView);
 
-        // Detectar cambios de tamaño de ventana
         window.addEventListener('resize', function() {
             isMobileView = window.innerWidth < 1024;
         });
@@ -1101,7 +1183,6 @@ $userRol = $_SESSION['user_rol'];
             requestNotificationPermission();
             initEmojiPicker();
             
-            // Configurar vista inicial para móviles
             if (isMobileView) {
                 showConversationsList();
             }
